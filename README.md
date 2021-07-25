@@ -48,7 +48,7 @@ Chương trình gồm các phần chính sau:
 
 ### Search Suggestion
 - Lưu lại lịch sử nhập từ InputProcessor.
-- Đưa ra từ gợi ý từ dữ liệu đã đó.
+- Đưa ra những gợi ý từ dữ liệu đó.
 
 ### User Interface
 - Nhiệm vụ của User Interface là đưa ra giao diện đẹp mắt cho người sử dụng. 
