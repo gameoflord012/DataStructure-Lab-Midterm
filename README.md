@@ -34,7 +34,7 @@
 ## project structure
 Chương trình gồm các phần chính sau:
 
-![Untitled Diagram (1)](https://user-images.githubusercontent.com/22610648/126887211-8912207d-0f77-41aa-b8d8-e3699ba102ab.png)
+![Untitled Diagram (2)](https://user-images.githubusercontent.com/22610648/126887226-c97d9ebf-76bb-453c-ab66-fd1ae50d76e1.png)
 
 ### Data Structure
 - Data Structure phải hỗ trợ các toán tử sau:
