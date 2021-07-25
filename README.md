@@ -47,7 +47,7 @@ Chương trình gồm các phần chính sau:
 - Input Processor có khả năng lọc những stopwords trong cú pháp người nhập.
 
 ### Search Result Fetcher
-- Trao đổi với **Database** và trả kết quả truy vấn để hiện thị lên **User Interface**.
+- Trao đổi với **Database** và trả kết quả truy vấn để hiển thị lên **User Interface**.
 
 ### Search Suggestion
 - Lưu lại lịch sử nhập từ **Input Processor**.
