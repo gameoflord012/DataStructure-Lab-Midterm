@@ -29,19 +29,29 @@
     - [ ] Entering “~set” will bring back results that include words like “configure”, “collection” and “change” which are all synonyms of “set
 
 - [ ] History: list of queries that a user entered before. When the user enters one of these queries again, the search engine should suggest it. See auto suggestion feature in Google for inspiration.
+- [ ] User enters a keyword. The program displays top 5 results that highlights the keyword and the paragraph contains that keyword.
 
 ## project structure
 Chương trình gồm các phần chính sau:
 
 ### Data Structure
-Nhiệm vụ là chứa dữ liệu vào cấu trúc, trả về kết quả khi truy vấn.
-
-Data Structure phải hỗ trợ các toán tử sau:
-    1. Cho các file dữ liệu và lưu nó vào cấu trúc dữ liệu
-    2. Hỗ trợ các toán tử tìm kiếm như AND, OR, ..., được liệt kê trên 
+- Data Structure phải hỗ trợ các toán tử sau:
+    1. Cho dữ liệu và lưu nó vào cấu trúc.
+    2. Hỗ trợ các toán tử tìm kiếm như AND, OR, ... được liệt kê trên.
+    3. Có khả năng lại lưu lịch sử truy vấn.
 
 ### Input Processsor
-Nhiệm vụ là phân tích cú pháp người dùng và đưa về cú pháp cơ bản để thực hiện truy vấn cho cấu trúc dữ liệu. Input Processor có khả năng lọc những stopwords trong cú pháp người nhập, đưa các toán tử AND, OR thành dạng cơ bản để thực hiện truy vấn DataStructure.
+- Phân tích cú pháp người dùng và đưa cú pháp về dạng cơ bản để thực hiện truy vấn.
+- Input Processor có khả năng lọc những stopwords trong cú pháp người nhập.
+
+### Search Suggestion
+- Lưu lại lịch sử nhập của người dùng.
+- Đưa ra từ gợi ý từ dữ liệu đã đó.
 
 ### User Interface
-Nhiệm vụ của User Interface là đưa ra giao diện đẹp mắt cho người sử dụng. UI có khả năng xử lí kết quả của DataStructure thành dạng đẹp mắt cho người dùng. Cũng như có khả năng truyền tải dữ liệu từ người dùng cho Inputprocessor để phân tích
+- Nhiệm vụ của User Interface là đưa ra giao diện đẹp mắt cho người sử dụng. 
+- UI có khả năng xử lí kết quả truy vấn của DataStructure thành dạng đẹp mắt cho người dùng. 
+- Cũng như có khả năng tải dữ liệu từ người nhập về Inputprocessor để phân tích.
+- Hiện ra những từ gợi ý từ dữ liệu trong Search Suggestion
+
+![ ](https://imgur.com/0p2b1dX)
