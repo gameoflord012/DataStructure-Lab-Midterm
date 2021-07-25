@@ -50,7 +50,7 @@ Chương trình gồm các phần chính sau:
 - Trao đổi với **Database** và trả kết quả truy vấn để hiển thị lên **User Interface**.
 
 ### Search Suggestion
-- Lưu lại lịch sử nhập từ **Input Processor**.
+- Lưu lại lịch sử nhập*.
 - Đưa ra những gợi ý từ dữ liệu đó.
 
 ### User Interface
