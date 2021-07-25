@@ -34,10 +34,10 @@
 ## Project Structure
 Chương trình gồm các phần chính sau:
 
-![Untitled Diagram (2)](https://user-images.githubusercontent.com/22610648/126887226-c97d9ebf-76bb-453c-ab66-fd1ae50d76e1.png)
+![Untitled Diagram (3)](https://user-images.githubusercontent.com/22610648/126900000-a5ef6249-9fd3-4aad-8a01-9faa2346de54.png)
 
-### Data Structure
-- Data Structure phải hỗ trợ các toán tử sau:
+### Database
+- Database phải hỗ trợ các toán tử sau:
     1. Cho dữ liệu và lưu nó vào cấu trúc.
     2. Hỗ trợ các toán tử tìm kiếm như AND, OR, ... được liệt kê trên.
     3. Có khả năng lại lưu lịch sử truy vấn.
@@ -46,11 +46,14 @@ Chương trình gồm các phần chính sau:
 - Phân tích cú pháp người dùng và đưa cú pháp về dạng cơ bản để thực hiện truy vấn.
 - Input Processor có khả năng lọc những stopwords trong cú pháp người nhập.
 
+### Search Result Fetcher
+- Trao đổi với **Database** và trả kết quả truy vấn để hiện thị lên **User Interface**.
+
 ### Search Suggestion
-- Lưu lại lịch sử nhập từ InputProcessor.
+- Lưu lại lịch sử nhập từ **Input Processor**.
 - Đưa ra những gợi ý từ dữ liệu đó.
 
 ### User Interface
-- UI có khả năng xử lí kết quả truy vấn của DataStructure thành dạng đẹp mắt cho người dùng. 
-- Có khả năng tải dữ liệu người nhập về Inputprocessor để phân tích.
-- Hiện ra những từ gợi ý từ dữ liệu trong Search Suggestion.
+- UI có khả năng xử lí kết quả truy vấn của **Database** thành dạng đẹp mắt cho người dùng. 
+- Có khả năng nạp dữ liệu người nhập vào **Search Result Fetcher** để lấy kết quả truy vấn.
+- Hiện ra những từ gợi ý từ dữ liệu trong **Search Suggestion**.
