@@ -31,7 +31,7 @@
 - [ ] History: list of queries that a user entered before. When the user enters one of these queries again, the search engine should suggest it. See auto suggestion feature in Google for inspiration.
 - [ ] User enters a keyword. The program displays top 5 results that highlights the keyword and the paragraph contains that keyword.
 
-## project structure
+## Project Structure
 Chương trình gồm các phần chính sau:
 
 ![Untitled Diagram (2)](https://user-images.githubusercontent.com/22610648/126887226-c97d9ebf-76bb-453c-ab66-fd1ae50d76e1.png)
