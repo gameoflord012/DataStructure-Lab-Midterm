@@ -34,6 +34,9 @@
 ## project structure
 Chương trình gồm các phần chính sau:
 
+![Untitled Diagram](https://user-images.githubusercontent.com/22610648/126887065-09f3fc01-3139-488b-8d49-7713884819d0.png)
+
+
 ### Data Structure
 - Data Structure phải hỗ trợ các toán tử sau:
     1. Cho dữ liệu và lưu nó vào cấu trúc.
@@ -52,6 +55,4 @@ Chương trình gồm các phần chính sau:
 - Nhiệm vụ của User Interface là đưa ra giao diện đẹp mắt cho người sử dụng. 
 - UI có khả năng xử lí kết quả truy vấn của DataStructure thành dạng đẹp mắt cho người dùng. 
 - Cũng như có khả năng tải dữ liệu từ người nhập về Inputprocessor để phân tích.
-- Hiện ra những từ gợi ý từ dữ liệu trong Search Suggestion
-
-![](https://imgur.com/0p2b1dX)
+- Hiện ra những từ gợi ý từ dữ liệu trong Search Suggestion.
