@@ -48,7 +48,7 @@ Chương trình gồm các phần chính sau:
 - Input Processor có khả năng lọc những stopwords trong cú pháp người nhập.
 
 ### Search Suggestion
-- Lưu lại lịch sử nhập của người dùng.
+- Lưu lại lịch sử nhập từ InputProcessor.
 - Đưa ra từ gợi ý từ dữ liệu đã đó.
 
 ### User Interface
