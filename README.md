@@ -54,4 +54,4 @@ Chương trình gồm các phần chính sau:
 - Cũng như có khả năng tải dữ liệu từ người nhập về Inputprocessor để phân tích.
 - Hiện ra những từ gợi ý từ dữ liệu trong Search Suggestion
 
-![ ](https://imgur.com/0p2b1dX)
+![](https://imgur.com/0p2b1dX)
