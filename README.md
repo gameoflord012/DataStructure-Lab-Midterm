@@ -35,6 +35,7 @@ Chương trình gồm các phần chính sau:
 
 ### Data Structure
 Nhiệm vụ là chứa dữ liệu vào cấu trúc, trả về kết quả khi truy vấn.
+
 Data Structure phải hỗ trợ các toán tử sau:
     1. Cho các file dữ liệu và lưu nó vào cấu trúc dữ liệu
     2. Hỗ trợ các toán tử tìm kiếm như AND, OR, ..., được liệt kê trên 
