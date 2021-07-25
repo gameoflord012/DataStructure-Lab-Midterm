@@ -51,7 +51,6 @@ Chương trình gồm các phần chính sau:
 - Đưa ra những gợi ý từ dữ liệu đó.
 
 ### User Interface
-- Nhiệm vụ của User Interface là đưa ra giao diện đẹp mắt cho người sử dụng. 
 - UI có khả năng xử lí kết quả truy vấn của DataStructure thành dạng đẹp mắt cho người dùng. 
 - Có khả năng tải dữ liệu từ người nhập về Inputprocessor để phân tích.
 - Hiện ra những từ gợi ý từ dữ liệu trong Search Suggestion.
