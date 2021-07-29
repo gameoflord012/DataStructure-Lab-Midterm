@@ -18,6 +18,9 @@ public:
 	FileInfo(wstring filePath);
 	FileInfo();
 
+	static string GetPath(size_t key);
+	static FileInfo GetFileInfo(size_t key);
+
 private:
 	wstring GetContent(std::ifstream& fileStream);
 	vector<wstring> GetWords(wstring content);

@@ -14,14 +14,14 @@ public:
 	Trie();
 
 	int size();
-	void insert(string s, TInfo info);
-	vector<TInfo> getInfos(string s);
+	void insert(wstring s, TInfo info);
+	vector<TInfo> getInfos(wstring s);
 };
 
 template<typename TInfo>
 inline int Trie<TInfo>::size()
 {
-	return tree.size();
+	return (int)tree.size();
 }
 
 template<typename TInfo>
@@ -31,7 +31,7 @@ inline Trie<TInfo>::Trie()
 }
 
 template<typename TInfo>
-inline void Trie<TInfo>::insert(string s, TInfo info)
+inline void Trie<TInfo>::insert(wstring s, TInfo info)
 {
 	int currentNode = 0;
 	for (int i = 0; i < s.size(); i++)
@@ -44,26 +44,26 @@ inline void Trie<TInfo>::insert(string s, TInfo info)
 			tree.push_back(vector<int>(1024, -1));
 		}
 
-		currentNode = tree[currentNode][s[i]];
+		currentNode = tree[currentNode][c];
 	}
 
 	infos[currentNode].push_back(info);
 }
 
 template<typename TInfo>
-inline vector<TInfo> Trie<TInfo>::getInfos(string s)
+inline vector<TInfo> Trie<TInfo>::getInfos(wstring s)
 {
 	int currentNode = 0;
 	for (int i = 0; i < s.size(); i++)
 	{
-		char c = tolower(s[i]);
+		wchar_t c = tolower(s[i]);
 
 		if (tree[currentNode][c] == -1)
 		{
 			return vector<TInfo>();
 		}
 
-		currentNode = tree[currentNode][s[i]];
+		currentNode = tree[currentNode][c];
 	}
 
 	return infos[currentNode];

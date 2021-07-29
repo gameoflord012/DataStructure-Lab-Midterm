@@ -1,4 +1,5 @@
 #include "FileInfo.h"
+#include "JsonHandler.h"
 #include <fstream>
 #include <filesystem>
 #include <sstream>
@@ -11,6 +12,20 @@ FileInfo::FileInfo()
 {
 }
 
+string FileInfo::GetPath(size_t key)
+{
+	return SAVE_DATA_DIR + to_string(key) + ".txt";
+}
+
+FileInfo FileInfo::GetFileInfo(size_t key)
+{
+	ifstream file(GetPath(key));
+	json j;
+	file >> j;
+	file.close();
+	return j;
+}
+
 FileInfo::FileInfo(wstring pathInfo)
 {
 	ifstream file(pathInfo);
@@ -21,7 +36,7 @@ FileInfo::FileInfo(wstring pathInfo)
 	}
 
 	key = GetKey(pathInfo);
-	fileDataPath = SAVE_DATA_DIR + to_string(key) + ".txt";
+	fileDataPath = GetPath(key);
 	extension = path(pathInfo).extension();
 	title = path(pathInfo).filename().replace_extension();
 	content = GetContent(file);

@@ -6,7 +6,8 @@
 void to_json(json& j, const FileInfo& fileInfo) {
     j = json{ 
         {"key", fileInfo.key},
-        {"extension", fileInfo.extension}, 
+        {"fileDataPath", fileInfo.fileDataPath},
+        {"extension", fileInfo.extension},
         {"title", fileInfo.title}, 
         {"content", fileInfo.content},
         {"contentWords", fileInfo.contentWords},
@@ -16,22 +17,10 @@ void to_json(json& j, const FileInfo& fileInfo) {
 
 void from_json(const json& j, FileInfo& fileInfo) {
     j.at("key").get_to(fileInfo.key);
+    j.at("fileDataPath").get_to(fileInfo.fileDataPath);
     j.at("extension").get_to(fileInfo.extension);
     j.at("title").get_to(fileInfo.title);
     j.at("content").get_to(fileInfo.content);
     j.at("contentWords").get_to(fileInfo.contentWords);
     j.at("titleWords").get_to(fileInfo.title);
-}
-
-
-void to_json(json& j, const Database& data)
-{
-    j = json{
-        { "fileInfos", data.fileInfos }
-    };
-}
-
-void from_json(const json& j, Database& data)
-{
-    j.at("fileInfos").get_to(data.fileInfos);
 }

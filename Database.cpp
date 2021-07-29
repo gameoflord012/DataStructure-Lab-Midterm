@@ -11,44 +11,11 @@ Database* Database::instance;
 
 Database::Database()
 {
-}
-
-Database::Database(const Database& database)
-{
-	fileInfos = database.fileInfos;
-}
-
-Database::Database(map<size_t, FileInfo> fileInfos)
-{
-	this->fileInfos = fileInfos;
-}
-
-void Database::BuildDataBase()
-{
-	map<size_t, FileInfo> infos;
-	for (wstring path : GetAllPath(SAVE_DATA_DIR))
+	if (!FileExists(DATA_BASE_PATH))
 	{
-		ifstream file(path);
-		json j; file >> j;
-		file.close();
-
-		FileInfo info = j.get<FileInfo>();
-		infos[info.key] = info;
+		BuildSaveData();
+		BuildInfos();
 	}
-
-	ofstream file(DATA_BASE_PATH);
-	json j = Database(infos);
-	file << j;
-	file.close();
-}
-
-Database* Database::LoadDatabase(string path)
-{
-	ifstream file(path);
-	json j;
-	file >> j;
-	file.close();
-	return new Database(j.get<Database>());
 }
 
 vector<wstring> Database::GetAllPath(string directory)
@@ -61,29 +28,25 @@ vector<wstring> Database::GetAllPath(string directory)
 	return result;
 }
 
+vector<FileInfo> Database::GetResults(wstring word)
+{
+	vector<size_t> infoKeys = infos.getInfos(word);
+	vector<FileInfo> result;
+	for (size_t key : infoKeys)
+	{
+		result.push_back(FileInfo::GetFileInfo(key));
+	}
+	return result;
+}
+
+
 Database Database::GetInstance()
 {
 	if (instance == nullptr)
 	{
-		if (!FileExists(DATA_BASE_PATH))
-		{
-			// BuildSaveData();
-			BuildDataBase();
-		}
-		instance = LoadDatabase(DATA_BASE_PATH);
+		instance = new Database();
 	}
-
 	return *instance;
-}
-
-FileInfo Database::GetFileInfo(size_t key)
-{
-	if (!fileInfos.count(key))
-	{
-		throw "FileInfo key not found!";
-	}
-
-	return fileInfos[key];
 }
 
 bool Database::FileExists(string path)
@@ -101,6 +64,25 @@ void Database::BuildSaveData()
 		ofstream file(info.fileDataPath);
 		json j = info;
 		file << j << endl;
+		file.close();
+	}
+}
+
+void Database::BuildInfos()
+{
+	for (wstring path : GetAllPath(SAVE_DATA_DIR))
+	{
+		ifstream file(path);
+
+		json j;
+		file >> j;
+		FileInfo info = j.get<FileInfo>();
+
+		for (wstring s : info.contentWords)
+		{
+			infos.insert(s, info.key);
+		}
+
 		file.close();
 	}
 }

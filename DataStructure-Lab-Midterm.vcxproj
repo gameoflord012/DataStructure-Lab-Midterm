@@ -149,7 +149,6 @@
     <ClCompile Include="FileInfo.cpp" />
     <ClCompile Include="JsonHandler.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Trie.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Database.h" />
