@@ -11,7 +11,6 @@ Database* Database::instance;
 
 Database::Database()
 {
-
 }
 
 Database::Database(const Database& database)
@@ -28,7 +27,7 @@ void Database::BuildDataBase()
 {
 	map<size_t, FileInfo> infos;
 	for (wstring path : GetAllPath(SAVE_DATA_DIR))
-	{		
+	{
 		ifstream file(path);
 		json j; file >> j;
 		file.close();
@@ -46,7 +45,7 @@ void Database::BuildDataBase()
 Database* Database::LoadDatabase(string path)
 {
 	ifstream file(path);
-	json j; 
+	json j;
 	file >> j;
 	file.close();
 	return new Database(j.get<Database>());
@@ -78,7 +77,7 @@ Database Database::GetInstance()
 }
 
 FileInfo Database::GetFileInfo(size_t key)
-{		
+{
 	if (!fileInfos.count(key))
 	{
 		throw "FileInfo key not found!";
@@ -95,15 +94,13 @@ bool Database::FileExists(string path)
 }
 
 void Database::BuildSaveData()
-{	
+{
 	for (wstring path : GetAllPath(DATA_DIR))
 	{
-		FileInfo info = FileInfo(path);		
+		FileInfo info = FileInfo(path);
 		ofstream file(info.fileDataPath);
 		json j = info;
 		file << j << endl;
 		file.close();
 	}
 }
-
-

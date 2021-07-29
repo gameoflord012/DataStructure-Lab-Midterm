@@ -32,9 +32,9 @@ FileInfo::FileInfo(wstring pathInfo)
 }
 
 vector<wstring> FileInfo::GetWords(wstring content)
-{	
+{
 	wregex wordOnly(L"[a-z]+");
-	wsmatch sm;	
+	wsmatch sm;
 	regex_match(content, sm, wordOnly, regex_constants::match_default);
 
 	vector<wstring> result;
@@ -55,7 +55,7 @@ wstring FileInfo::GetContent(std::ifstream& fileStream)
 	stringstream stream;
 	stream << fileStream.rdbuf();
 	string str = stream.str();
-	return wstring(str.begin(), str.end());	
+	return wstring(str.begin(), str.end());
 }
 
 size_t FileInfo::GetKey(wstring stringToHash)
