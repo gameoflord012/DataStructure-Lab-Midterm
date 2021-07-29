@@ -16,6 +16,7 @@ Database::Database()
 		BuildSaveData();
 		BuildInfos();
 	}
+	LoadInfos();
 }
 
 vector<wstring> Database::GetAllPath(string directory)
@@ -70,6 +71,8 @@ void Database::BuildSaveData()
 
 void Database::BuildInfos()
 {
+	Trie<size_t> myInfos;
+
 	for (wstring path : GetAllPath(SAVE_DATA_DIR))
 	{
 		ifstream file(path);
@@ -80,9 +83,23 @@ void Database::BuildInfos()
 
 		for (wstring s : info.contentWords)
 		{
-			infos.insert(s, info.key);
+			myInfos.insert(s, info.key);
 		}
 
 		file.close();
 	}
+
+	ofstream file(DATA_BASE_PATH);
+	json j = myInfos;
+	file << j;
+	file.close();
+}
+
+void Database::LoadInfos()
+{
+	ifstream file(DATA_BASE_PATH);
+	json j;
+	file >> j;
+	infos = j;
+	file.close();
 }

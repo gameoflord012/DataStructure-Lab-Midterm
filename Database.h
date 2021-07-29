@@ -21,6 +21,7 @@ private:
 
 	void BuildSaveData();
 	void BuildInfos();
+	void LoadInfos();
 	Database();
 };
 

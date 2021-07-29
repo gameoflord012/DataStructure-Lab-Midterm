@@ -24,3 +24,16 @@ void from_json(const json& j, FileInfo& fileInfo) {
     j.at("contentWords").get_to(fileInfo.contentWords);
     j.at("titleWords").get_to(fileInfo.title);
 }
+
+void to_json(json& j, const Trie<size_t>& trie)
+{
+    j = json{
+        {"tree", trie.tree},
+        {"infos", trie.infos}
+    };
+}
+
+void from_json(const json& j, Trie<size_t>& trie) {
+    j.at("tree").get_to(trie.tree);
+    j.at("infos").get_to(trie.infos);
+}
