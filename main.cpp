@@ -1,4 +1,5 @@
 #include "json.hpp"
+#include "Database.h"
 #include <iostream>
 #include <filesystem>
 #include <string>
@@ -10,8 +11,9 @@ namespace fs = std::filesystem;
 
 int main()
 {   
-    cout << DATA_DIR << endl;
-    string path = DATA_DIR;
-    for (const auto& entry : fs::directory_iterator(path))
-        std::cout << entry.path() << std::endl;
+    Database database = Database::GetInstance();
+    for (auto file : database.files)
+    {
+        wcout << file.extension << endl;
+    }
 }
