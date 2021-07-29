@@ -1,4 +1,5 @@
 #include "Database.h"
+#include "JsonHandler.h"
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -8,20 +9,9 @@ using namespace std;
 
 Database* Database::instance;
 
-
-
 Database::Database()
 {
-	ifstream file(DATA_SAVE_PATH);
-	if (!file.good())
-	{
-		BuildDatabase();
-	}
-}
-
-Database::~Database()
-{
-	delete instance;
+	BuildDataSave();
 }
 
 vector<wstring> Database::GetAllPath()
@@ -43,11 +33,15 @@ Database Database::GetInstance()
 	return *instance;
 }
 
-void Database::BuildDatabase()
-{
+void Database::BuildDataSave()
+{	
 	for (wstring path : GetAllPath())
 	{
-		files.push_back(FileInfo(path));
+		FileInfo info = FileInfo(path);		
+		ofstream file(info.fileDataPath);
+		json j = info;
+		file << j << endl;
+		file.close();
 	}
 }
 

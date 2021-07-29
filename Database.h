@@ -13,11 +13,10 @@ public:
 
 	static vector<std::wstring> GetAllPath();
 	static Database GetInstance();
-	~Database();
 
 private:
 	static Database* instance;
-	void BuildDatabase();
+	void BuildDataSave();
 	Database();
 };
 

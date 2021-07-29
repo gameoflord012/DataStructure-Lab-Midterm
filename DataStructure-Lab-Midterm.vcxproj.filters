@@ -35,5 +35,8 @@
     <ClInclude Include="FileInfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="JsonHandler.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
