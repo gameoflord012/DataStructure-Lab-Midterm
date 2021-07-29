@@ -16,6 +16,7 @@ public:
 	vector<wstring> contentWords;
 
 	FileInfo(wstring filePath);
+	FileInfo();
 
 private:
 	wstring GetContent(std::ifstream& fileStream);

@@ -18,13 +18,17 @@ FileInfo::FileInfo(wstring pathInfo)
 
 	key = GetKey(pathInfo);
 	fileDataPath = SAVE_DATA_DIR + to_string(key) + ".txt";
-	extension = path(pathInfo).extension().wstring();	
-	title = path(pathInfo).filename().wstring();
+	extension = path(pathInfo).extension();
+	title = path(pathInfo).filename().replace_extension();
 	content = GetContent(file);
 	contentWords = GetWords(content);
 	titleWords = GetWords(title);
 
 	file.close();
+}
+
+FileInfo::FileInfo()
+{
 }
 
 vector<wstring> FileInfo::GetWords(wstring content)

@@ -2,6 +2,7 @@
 #include "FileInfo.h"
 #include <string>
 #include <vector>
+#include <map>
 
 using namespace std;
 
@@ -9,14 +10,15 @@ using namespace std;
 class Database
 {
 public:
-	vector<FileInfo> files;
-
-	static vector<std::wstring> GetAllPath();
+	static vector<std::wstring> GetAllPath(string directory);
 	static Database GetInstance();
+	static FileInfo GetFileInfo(size_t key);
 
 private:
 	static Database* instance;
-	void BuildDataSave();
+	static void BuildDataSave();
+	static map<size_t, FileInfo> fileInfos;
+	static void LoadFileInfos();
 	Database();
 };
 
