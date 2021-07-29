@@ -8,16 +8,25 @@ using namespace std::filesystem;
 using namespace std;
 
 Database* Database::instance;
-map<size_t, FileInfo> Database::fileInfos;
 
 Database::Database()
 {
-	BuildDataSave();
-	LoadFileInfos();
+
 }
 
-void Database::LoadFileInfos()
+Database::Database(const Database& database)
 {
+	fileInfos = database.fileInfos;
+}
+
+Database::Database(map<size_t, FileInfo> fileInfos)
+{
+	this->fileInfos = fileInfos;
+}
+
+void Database::BuildDataBase()
+{
+	map<size_t, FileInfo> infos;
 	for (wstring path : GetAllPath(SAVE_DATA_DIR))
 	{		
 		ifstream file(path);
@@ -25,8 +34,22 @@ void Database::LoadFileInfos()
 		file.close();
 
 		FileInfo info = j.get<FileInfo>();
-		fileInfos[info.key] = info;
+		infos[info.key] = info;
 	}
+
+	ofstream file(DATA_BASE_PATH);
+	json j = Database(infos);
+	file << j;
+	file.close();
+}
+
+Database* Database::LoadDatabase(string path)
+{
+	ifstream file(path);
+	json j; 
+	file >> j;
+	file.close();
+	return new Database(j.get<Database>());
 }
 
 vector<wstring> Database::GetAllPath(string directory)
@@ -43,8 +66,14 @@ Database Database::GetInstance()
 {
 	if (instance == nullptr)
 	{
-		instance = new Database();
+		if (!FileExists(DATA_BASE_PATH))
+		{
+			// BuildSaveData();
+			BuildDataBase();
+		}
+		instance = LoadDatabase(DATA_BASE_PATH);
 	}
+
 	return *instance;
 }
 
@@ -58,7 +87,14 @@ FileInfo Database::GetFileInfo(size_t key)
 	return fileInfos[key];
 }
 
-void Database::BuildDataSave()
+bool Database::FileExists(string path)
+{
+	ifstream file(DATA_BASE_PATH);
+	return file.good();
+	file.close();
+}
+
+void Database::BuildSaveData()
 {	
 	for (wstring path : GetAllPath(DATA_DIR))
 	{

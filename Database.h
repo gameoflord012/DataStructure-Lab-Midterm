@@ -6,19 +6,27 @@
 
 using namespace std;
 
-
 class Database
 {
 public:
-	static vector<std::wstring> GetAllPath(string directory);
+	map<size_t, FileInfo> fileInfos;
+
 	static Database GetInstance();
-	static FileInfo GetFileInfo(size_t key);
+	static bool FileExists(string path);
+	static vector<std::wstring> GetAllPath(string directory);
+
+	FileInfo GetFileInfo(size_t key);
+
+	Database();
+	Database(const Database&);
 
 private:
 	static Database* instance;
-	static void BuildDataSave();
-	static map<size_t, FileInfo> fileInfos;
-	static void LoadFileInfos();
-	Database();
+
+	Database(map<size_t, FileInfo> fileInfos);
+
+	static void BuildSaveData();
+	static Database* LoadDatabase(string path);
+	static void BuildDataBase();
 };
 

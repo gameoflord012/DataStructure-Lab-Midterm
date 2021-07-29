@@ -7,6 +7,10 @@
 using namespace std::filesystem;
 using namespace std;
 
+FileInfo::FileInfo()
+{
+}
+
 FileInfo::FileInfo(wstring pathInfo)
 {
 	ifstream file(pathInfo);
@@ -27,20 +31,20 @@ FileInfo::FileInfo(wstring pathInfo)
 	file.close();
 }
 
-FileInfo::FileInfo()
-{
-}
-
 vector<wstring> FileInfo::GetWords(wstring content)
 {	
 	wregex wordOnly(L"[a-z]+");
 	wsmatch sm;	
-	regex_match(content, sm, wordOnly);
+	regex_match(content, sm, wordOnly, regex_constants::match_default);
 
 	vector<wstring> result;
-	for (int i = 0; i < sm.size(); i++)
-	{
-		result.push_back(sm[i]);
+
+	while (regex_search(content, sm, wordOnly)) {
+		for (auto x : sm)
+		{
+			result.push_back(x);
+		}
+		content = sm.suffix().str();
 	}
 
 	return result;
