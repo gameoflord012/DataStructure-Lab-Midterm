@@ -22,6 +22,7 @@ private:
 	Trie<size_t> searchByFileType;
 	Trie<size_t> searchByTitle;
 	map<wstring, set<size_t>> searchByExtension;
+	map<size_t, set<size_t>> searchByCost;
 
 	void BuildSaveData();
 	void BuildDataStruct();

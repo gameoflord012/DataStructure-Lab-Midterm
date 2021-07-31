@@ -34,25 +34,28 @@ SearchResult Database::GetResults(SearchInfo searchInfo)
 	vector<size_t> result;
 	switch (searchInfo.searchType)
 	{
-	case SearchType::word:
+	case SearchType::word: // ==========================================================
 		for (size_t key : searchByWord.getInfos(searchInfo.syntax))
 		{ result.push_back(key); }
 		break;
-	case SearchType::cost:
+	case SearchType::cost: // ==========================================================
+
+
+
 		break;
-	case SearchType::title:
+	case SearchType::title: // ==========================================================
 		for (size_t key : searchByTitle.getInfos(searchInfo.syntax))
 		{ result.push_back(key); }
 		break;
-	case SearchType::extension:	
+	case SearchType::extension:	// ==========================================================
 		for(size_t key : searchByExtension[searchInfo.syntax])
 		{ result.push_back(key); }
 		break;
-	case SearchType::hashTag:
+	case SearchType::hashTag: // ==========================================================
 		for (size_t key : searchByHashtag.getInfos(searchInfo.syntax))
 		{ result.push_back(key); }
 		break;
-	case SearchType::synonyms:
+	case SearchType::synonyms: // ==========================================================
 		break;
 	default:
 		break;
@@ -95,6 +98,7 @@ void Database::BuildDataStruct()
 	Trie<size_t> hashtagSearching;
 	Trie<size_t> titleSearching;
 	map<wstring, set<size_t>> extensionSearching;
+	map<size_t, set<size_t>> costSearching;
 
 	for (wstring path : GetAllPath(SAVE_DATA_DIR))
 	{
@@ -106,17 +110,19 @@ void Database::BuildDataStruct()
 		for (wstring s : info.hashtags)     { hashtagSearching.insert(s, info.key); }
 		for (wstring s : info.titleWords)   { titleSearching  .insert(s, info.key); }
 		extensionSearching[info.extension].insert(info.key);
+		for (size_t cost : info.costs) { costSearching[cost].insert(info.key); }
 
 		file.close();
 	}
 
 	ofstream file(DATA_BASE_PATH);
 
-	file << json{ 
+	file << json{
 		{"searchByWord", wordSearching},
 		{"searchByHashtag", hashtagSearching},
 		{"searchByExtension", extensionSearching},
-		{"searchByTitle", titleSearching}
+		{"searchByTitle", titleSearching},
+		{"searchByCost", costSearching}
 	};
 
 	file.close();
@@ -131,6 +137,7 @@ void Database::LoadDataStruct()
 	searchByHashtag = j.at("searchByHashtag");
 	searchByTitle = j.at("searchByTitle");
 	searchByExtension = j.at("searchByExtension").get<map<wstring, set<size_t>>>();
+	searchByCost = j.at("searchByCost").get<map<size_t, set<size_t>>>();
 
 	file.close();
 }

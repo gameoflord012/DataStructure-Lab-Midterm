@@ -41,3 +41,19 @@ void from_json(const json& j, Trie<size_t>& trie) {
     j.at("tree").get_to(trie.tree);
     j.at("infos").get_to(trie.infos);
 }
+
+void to_json(json& j, const map<size_t, set<size_t>>& myMap)
+{
+    for (auto& [key, value] : myMap)
+    {
+        j.push_back({ to_string(key), value });
+    }
+}
+
+void from_json(const json& j, map<size_t, set<size_t>>& myMap)
+{
+    for (auto it = j.begin(); it != j.end(); ++it)
+    {
+        myMap[stoull(it.key())] = it.value().get<set<size_t>>();
+    }
+}
