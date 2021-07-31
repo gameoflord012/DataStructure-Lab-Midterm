@@ -42,7 +42,7 @@ SearchResult Database::GetResults(SearchInfo searchInfo)
 		break;
 	case SearchType::title:
 		break;
-	case SearchType::extension:
+	case SearchType::extension:		
 		break;
 	case SearchType::hashTag:
 		for (size_t key : searchByHashtag.getInfos(searchInfo.syntax))
@@ -89,7 +89,7 @@ void Database::BuildDataStruct()
 {
 	Trie<size_t> wordSearching;
 	Trie<size_t> hashtagSearching;
-	map<wstring, size_t> extensionSearching;
+	map<wstring, set<size_t>> extensionSearching;
 
 	for (wstring path : GetAllPath(SAVE_DATA_DIR))
 	{
@@ -99,6 +99,7 @@ void Database::BuildDataStruct()
 
 		for (wstring s : info.contentWords) { wordSearching.insert(s, info.key); }
 		for (wstring s : info.hashtags) { hashtagSearching.insert(s, info.key); }
+		extensionSearching[info.extension].insert(info.key);
 
 		file.close();
 	}
@@ -121,7 +122,7 @@ void Database::LoadDataStruct()
 
 	searchByWord = j.at("searchByWord");
 	searchByHashtag = j.at("searchByHashtag");
-	searchByExtension = j.at("searchByExtension").get<map<wstring, size_t>>();
+	searchByExtension = j.at("searchByExtension").get<map<wstring, set<size_t>>>();
 
 	file.close();
 }
