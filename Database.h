@@ -17,7 +17,8 @@ public:
 	
 private:
 	static Database* instance;
-	Trie<size_t> infos;
+	Trie<size_t> searchByWord;
+	Trie<size_t> searchByHashtag;
 
 	void BuildSaveData();
 	void BuildDataStruct();

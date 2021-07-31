@@ -4,6 +4,7 @@
 #include <filesystem>
 #include <sstream>
 #include <regex>
+#include <algorithm>
 
 using namespace std::filesystem;
 using namespace std;
@@ -40,8 +41,13 @@ FileInfo::FileInfo(wstring pathInfo)
 	extension = path(pathInfo).extension();
 	title = path(pathInfo).filename().replace_extension();
 	content = GetContent(file);
-	contentWords = GetWords(content, L"[a-z]+");
-	titleWords = GetWords(title, L"[a-z]+");
+	contentWords = GetWords(content, L"[a-z0-9]+");
+	titleWords = GetWords(title, L"[a-z0-9]+");
+
+	vector<wstring> hashtagsWithTag = GetWords(content, L"#[a-z0-9]+");
+	hashtags = GetWords(
+		accumulate(hashtagsWithTag.begin(), hashtagsWithTag.end(), wstring(L"")),
+		L"[a-z0-9]+");
 
 	file.close();
 }

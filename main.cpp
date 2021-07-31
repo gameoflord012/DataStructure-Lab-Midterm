@@ -14,9 +14,11 @@ namespace fs = std::filesystem;
 int main()
 {
 	Database data = Database::GetInstance();	
-	SearchResult result = data.
-		GetResults(SearchInfo(L"Every")).
-		AND(data.GetResults(SearchInfo(L"IN")));
+	SearchResult result = 
+		data.GetResults(SearchInfo(L"Every")).AND(
+		data.GetResults(SearchInfo(L"IN"))).OR(
+		data.GetResults(SearchInfo(L"headline", SearchType::hashTag)
+	));
 	
 
 	for (FileInfo info : result.infos)

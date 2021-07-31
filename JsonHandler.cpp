@@ -11,7 +11,8 @@ void to_json(json& j, const FileInfo& fileInfo) {
         {"title", fileInfo.title}, 
         {"content", fileInfo.content},
         {"contentWords", fileInfo.contentWords},
-        {"titleWords", fileInfo.title}
+        {"titleWords", fileInfo.title},
+        {"hashtags", fileInfo.hashtags}
     };
 }
 
@@ -23,6 +24,7 @@ void from_json(const json& j, FileInfo& fileInfo) {
     j.at("content").get_to(fileInfo.content);
     j.at("contentWords").get_to(fileInfo.contentWords);
     j.at("titleWords").get_to(fileInfo.title);
+    j.at("hashtags").get_to(fileInfo.hashtags);
 }
 
 void to_json(json& j, const Trie<size_t>& trie)

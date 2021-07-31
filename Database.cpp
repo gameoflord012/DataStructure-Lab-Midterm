@@ -35,10 +35,8 @@ SearchResult Database::GetResults(SearchInfo searchInfo)
 	switch (searchInfo.searchType)
 	{
 	case SearchType::word:
-		for (size_t key : infos.getInfos(searchInfo.syntax))
-		{
-			result.push_back(FileInfo::GetFileInfo(key));
-		}
+		for (size_t key : searchByWord.getInfos(searchInfo.syntax))
+		{ result.push_back(FileInfo::GetFileInfo(key)); }
 		break;
 	case SearchType::cost:
 		break;
@@ -47,6 +45,8 @@ SearchResult Database::GetResults(SearchInfo searchInfo)
 	case SearchType::extension:
 		break;
 	case SearchType::hashTag:
+		for (size_t key : searchByHashtag.getInfos(searchInfo.syntax))
+		{ result.push_back(FileInfo::GetFileInfo(key)); }
 		break;
 	case SearchType::synonyms:
 		break;
@@ -87,35 +87,38 @@ void Database::BuildSaveData()
 
 void Database::BuildDataStruct()
 {
-	Trie<size_t> myInfos;
+	Trie<size_t> wordTrie;
+	Trie<size_t> hashtagTrie;
 
 	for (wstring path : GetAllPath(SAVE_DATA_DIR))
 	{
 		ifstream file(path);
 
-		json j;
-		file >> j;
-		FileInfo info = j.get<FileInfo>();
+		json j; file >> j; FileInfo info = j.get<FileInfo>();
 
-		for (wstring s : info.contentWords)
-		{
-			myInfos.insert(s, info.key);
-		}
+		for (wstring s : info.contentWords) { wordTrie.insert(s, info.key); }
+		for (wstring s : info.hashtags) { hashtagTrie.insert(s, info.key); }
 
 		file.close();
 	}
 
 	ofstream file(DATA_BASE_PATH);
-	json j = myInfos;
-	file << j;
+
+	file << json{ 
+		{ "searchByWord", wordTrie },
+		{ "searchByHashtag", hashtagTrie }
+	};
+
 	file.close();
 }
 
 void Database::LoadDataStruct()
 {
 	ifstream file(DATA_BASE_PATH);
-	json j;
-	file >> j;
-	infos = j;
+	json j; file >> j;
+
+	searchByWord = j.at("searchByWord");
+	searchByHashtag = j.at("searchByHashtag");
+
 	file.close();
 }

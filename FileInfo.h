@@ -15,7 +15,7 @@ public:
 	wstring content;
 	vector<wstring> titleWords;
 	vector<wstring> contentWords;
-	vector<wstring> hashTags;
+	vector<wstring> hashtags;
 
 	FileInfo(wstring filePath);
 	FileInfo();
