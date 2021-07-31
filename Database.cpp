@@ -35,25 +35,22 @@ SearchResult Database::GetResults(SearchInfo searchInfo)
 	switch (searchInfo.searchType)
 	{
 	case SearchType::word: // ==========================================================
-		for (size_t key : searchByWord.getInfos(searchInfo.syntax))
-		{ result.push_back(key); }
+		result = searchByWord.getInfos(searchInfo.syntax);
 		break;
 	case SearchType::cost: // ==========================================================
-
-
-
+		for(auto it = searchByCost.lower_bound(searchInfo.minCost), end = searchByCost.upper_bound(searchInfo.maxCost); it != end; it++)
+		{ 
+			for (size_t key : it->second) result.push_back(key);
+		}
 		break;
 	case SearchType::title: // ==========================================================
-		for (size_t key : searchByTitle.getInfos(searchInfo.syntax))
-		{ result.push_back(key); }
+		result = searchByTitle.getInfos(searchInfo.syntax);
 		break;
 	case SearchType::extension:	// ==========================================================
-		for(size_t key : searchByExtension[searchInfo.syntax])
-		{ result.push_back(key); }
+		result.assign(searchByExtension[searchInfo.syntax].begin(), searchByExtension[searchInfo.syntax].end());
 		break;
 	case SearchType::hashTag: // ==========================================================
-		for (size_t key : searchByHashtag.getInfos(searchInfo.syntax))
-		{ result.push_back(key); }
+		result = searchByHashtag.getInfos(searchInfo.syntax);
 		break;
 	case SearchType::synonyms: // ==========================================================
 		break;
