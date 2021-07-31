@@ -30,11 +30,8 @@ FileInfo FileInfo::GetFileInfo(size_t key)
 FileInfo::FileInfo(wstring pathInfo)
 {
 	ifstream file(pathInfo);
-
 	if (!file.good())
-	{
-		throw "Database file not found";
-	}
+	{ throw "Info file not found"; }
 
 	key = GetKey(pathInfo);
 	fileDataPath = GetPath(key);
