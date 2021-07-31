@@ -149,12 +149,14 @@
     <ClCompile Include="FileInfo.cpp" />
     <ClCompile Include="JsonHandler.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="SearchInfo.cpp" />
     <ClCompile Include="SearchResult.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Database.h" />
     <ClInclude Include="FileInfo.h" />
     <ClInclude Include="JsonHandler.h" />
+    <ClInclude Include="SearchInfo.h" />
     <ClInclude Include="SearchResult.h" />
     <ClInclude Include="Trie.h" />
   </ItemGroup>

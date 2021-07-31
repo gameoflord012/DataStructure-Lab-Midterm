@@ -12,6 +12,7 @@ public:
 	SearchResult(vector<FileInfo> infos);
 	SearchResult AND(SearchResult other);
 	SearchResult OR(SearchResult other);
+	SearchResult EXCLUDE(SearchResult other);
 
 private:
 	set<int> keys;

@@ -14,5 +14,10 @@ int main()
 {
 	Database data = Database::GetInstance();	
 	SearchResult result = data.GetResults(L"Every").AND(data.GetResults(L"IN"));
-	cout << result.infos.size() << endl;
+	
+
+	for (FileInfo info : result.infos)
+	{
+		wcout << info.title << " " << info.extension << endl;
+	}
 }
