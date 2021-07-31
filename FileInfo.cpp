@@ -38,7 +38,7 @@ FileInfo::FileInfo(wstring pathInfo)
 
 	key = GetKey(pathInfo);
 	fileDataPath = GetPath(key);
-	extension = path(pathInfo).extension();
+	extension = CombineWords(GetWords(path(pathInfo).extension(), L"[a-z0-9]+"));
 	title = path(pathInfo).filename().replace_extension();
 	content = GetContent(file);
 	contentWords = GetWords(content, L"[a-z0-9]+");
@@ -49,7 +49,7 @@ FileInfo::FileInfo(wstring pathInfo)
 	file.close();
 }
 
-wstring FileInfo::CombineWords(std::vector<std::wstring> hashtagsWithTag)
+wstring FileInfo::CombineWords(const std::vector<std::wstring>& hashtagsWithTag)
 {
 	return accumulate(hashtagsWithTag.begin(), hashtagsWithTag.end(), wstring(L""));
 }

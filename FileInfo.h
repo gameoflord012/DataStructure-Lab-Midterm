@@ -25,7 +25,7 @@ public:
 	static FileInfo GetFileInfo(size_t key);
 
 private:
-	wstring CombineWords(std::vector<std::wstring> hashtagsWithTag);
+	wstring CombineWords(const std::vector<std::wstring>& hashtagsWithTag);
 	wstring GetContent(std::ifstream& fileStream);
 	vector<wstring> GetWords(wstring content, wstring regexSyntax);
 	vector<size_t> GetNumbers(wstring content);

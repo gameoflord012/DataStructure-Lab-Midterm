@@ -15,6 +15,6 @@ public:
 	SearchResult EXCLUDE(SearchResult other);
 
 private:
-	set<int> keys;
+	set<size_t> keys;
 };
 
