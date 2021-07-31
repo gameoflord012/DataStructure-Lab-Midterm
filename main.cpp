@@ -13,6 +13,6 @@ namespace fs = std::filesystem;
 int main()
 {
 	Database data = Database::GetInstance();	
-	vector<FileInfo> infos = data.GetResults(L"Every");
-	cout << infos.size() << endl;
+	SearchResult result = data.GetResults(L"Every").AND(data.GetResults(L"IN"));
+	cout << result.infos.size() << endl;
 }

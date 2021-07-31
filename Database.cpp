@@ -29,7 +29,7 @@ vector<wstring> Database::GetAllPath(string directory)
 	return result;
 }
 
-vector<FileInfo> Database::GetResults(wstring word)
+SearchResult Database::GetResults(wstring word)
 {
 	vector<size_t> infoKeys = infos.getInfos(word);
 	vector<FileInfo> result;
@@ -37,9 +37,9 @@ vector<FileInfo> Database::GetResults(wstring word)
 	{
 		result.push_back(FileInfo::GetFileInfo(key));
 	}
-	return result;
-}
 
+	return SearchResult(result);
+}
 
 Database Database::GetInstance()
 {

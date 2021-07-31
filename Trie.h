@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <map>
+#include <set>
 
 using namespace std;
 
@@ -10,7 +11,7 @@ class Trie
 {
 public:	
 	vector<map<int, int>> tree;
-	map<int, vector<TInfo>> infos;
+	map<int, set<TInfo>> infos;
 	Trie();
 
 	int size();
@@ -47,7 +48,7 @@ inline void Trie<TInfo>::insert(wstring s, TInfo info)
 		currentNode = tree[currentNode][c];
 	}
 
-	infos[currentNode].push_back(info);
+	infos[currentNode].insert(info);
 }
 
 template<typename TInfo>
@@ -66,5 +67,6 @@ inline vector<TInfo> Trie<TInfo>::getInfos(wstring s)
 		currentNode = tree[currentNode][c];
 	}
 
-	return infos[currentNode];
+	set<TInfo> resultInfos = infos[currentNode];
+	return vector<TInfo>(resultInfos.begin(), resultInfos.end());
 }
