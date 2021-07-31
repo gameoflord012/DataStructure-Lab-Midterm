@@ -1,5 +1,11 @@
 #include "SearchInfo.h"
 
+SearchInfo::SearchInfo(wstring syntax)
+{
+	this->searchType = SearchType::word;
+	this->syntax = syntax;
+}
+
 SearchInfo::SearchInfo(wstring syntax, SearchType searchType)
 {
 	this->searchType = searchType;

@@ -40,21 +40,21 @@ FileInfo::FileInfo(wstring pathInfo)
 	extension = path(pathInfo).extension();
 	title = path(pathInfo).filename().replace_extension();
 	content = GetContent(file);
-	contentWords = GetWords(content);
-	titleWords = GetWords(title);
+	contentWords = GetWords(content, L"[a-z]+");
+	titleWords = GetWords(title, L"[a-z]+");
 
 	file.close();
 }
 
-vector<wstring> FileInfo::GetWords(wstring content)
+vector<wstring> FileInfo::GetWords(wstring content, wstring regexSyntax)
 {
-	wregex wordOnly(L"[a-z]+");
+	wregex rg(regexSyntax);
 	wsmatch sm;
-	regex_match(content, sm, wordOnly, regex_constants::match_default);
+	regex_match(content, sm, rg, regex_constants::match_default);
 
 	vector<wstring> result;
 
-	while (regex_search(content, sm, wordOnly)) {
+	while (regex_search(content, sm, rg)) {
 		for (auto x : sm)
 		{
 			result.push_back(x);

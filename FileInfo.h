@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+
 using namespace std;
 
 class FileInfo
@@ -14,6 +15,7 @@ public:
 	wstring content;
 	vector<wstring> titleWords;
 	vector<wstring> contentWords;
+	vector<wstring> hashTags;
 
 	FileInfo(wstring filePath);
 	FileInfo();
@@ -23,7 +25,7 @@ public:
 
 private:
 	wstring GetContent(std::ifstream& fileStream);
-	vector<wstring> GetWords(wstring content);
+	vector<wstring> GetWords(wstring content, wstring regexSyntax);
 	size_t GetKey(wstring stringToHash);
 };
 

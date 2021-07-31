@@ -14,9 +14,9 @@ Database::Database()
 	if (!FileExists(DATA_BASE_PATH))
 	{
 		BuildSaveData();
-		BuildInfos();
+		BuildDataStruct();
 	}
-	LoadInfos();
+	LoadDataStruct();
 }
 
 vector<wstring> Database::GetAllPath(string directory)
@@ -29,9 +29,32 @@ vector<wstring> Database::GetAllPath(string directory)
 	return result;
 }
 
-SearchResult Database::GetResults(SearchInfo word)
+SearchResult Database::GetResults(SearchInfo searchInfo)
 {
-	
+	vector<FileInfo> result;
+	switch (searchInfo.searchType)
+	{
+	case SearchType::word:
+		for (size_t key : infos.getInfos(searchInfo.syntax))
+		{
+			result.push_back(FileInfo::GetFileInfo(key));
+		}
+		break;
+	case SearchType::cost:
+		break;
+	case SearchType::title:
+		break;
+	case SearchType::extension:
+		break;
+	case SearchType::hashTag:
+		break;
+	case SearchType::synonyms:
+		break;
+	default:
+		break;
+	}
+
+	return SearchResult(result);
 }
 
 Database Database::GetInstance()
@@ -62,7 +85,7 @@ void Database::BuildSaveData()
 	}
 }
 
-void Database::BuildInfos()
+void Database::BuildDataStruct()
 {
 	Trie<size_t> myInfos;
 
@@ -88,7 +111,7 @@ void Database::BuildInfos()
 	file.close();
 }
 
-void Database::LoadInfos()
+void Database::LoadDataStruct()
 {
 	ifstream file(DATA_BASE_PATH);
 	json j;
