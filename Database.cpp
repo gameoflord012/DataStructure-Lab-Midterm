@@ -87,8 +87,9 @@ void Database::BuildSaveData()
 
 void Database::BuildDataStruct()
 {
-	Trie<size_t> wordTrie;
-	Trie<size_t> hashtagTrie;
+	Trie<size_t> wordSearching;
+	Trie<size_t> hashtagSearching;
+	map<wstring, size_t> extensionSearching;
 
 	for (wstring path : GetAllPath(SAVE_DATA_DIR))
 	{
@@ -96,8 +97,8 @@ void Database::BuildDataStruct()
 
 		json j; file >> j; FileInfo info = j.get<FileInfo>();
 
-		for (wstring s : info.contentWords) { wordTrie.insert(s, info.key); }
-		for (wstring s : info.hashtags) { hashtagTrie.insert(s, info.key); }
+		for (wstring s : info.contentWords) { wordSearching.insert(s, info.key); }
+		for (wstring s : info.hashtags) { hashtagSearching.insert(s, info.key); }
 
 		file.close();
 	}
@@ -105,8 +106,9 @@ void Database::BuildDataStruct()
 	ofstream file(DATA_BASE_PATH);
 
 	file << json{ 
-		{ "searchByWord", wordTrie },
-		{ "searchByHashtag", hashtagTrie }
+		{"searchByWord", wordSearching},
+		{"searchByHashtag", hashtagSearching},
+		{"searchByExtension", extensionSearching}
 	};
 
 	file.close();
@@ -119,6 +121,7 @@ void Database::LoadDataStruct()
 
 	searchByWord = j.at("searchByWord");
 	searchByHashtag = j.at("searchByHashtag");
+	searchByExtension = j.at("searchByExtension").get<map<wstring, size_t>>();
 
 	file.close();
 }
