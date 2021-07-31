@@ -12,3 +12,10 @@ SearchInfo::SearchInfo(int minCost, int maxCost)
 	this->minCost = minCost;
 	this->maxCost = maxCost;
 }
+
+SearchInfo::SearchInfo(int cost)
+{
+	this->searchType = SearchType::cost;
+	this->minCost = cost;
+	this->maxCost = cost;
+}

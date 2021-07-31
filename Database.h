@@ -2,6 +2,7 @@
 #include "FileInfo.h"
 #include "Trie.h"
 #include "SearchResult.h"
+#include "SearchInfo.h"
 #include <string>
 #include <vector>
 #include <map>
@@ -12,9 +13,7 @@ class Database
 {
 public:
 	static Database GetInstance();
-	static bool FileExists(string path);
-	static vector<wstring> GetAllPath(string directory);
-	SearchResult GetResults(wstring word);
+	SearchResult GetResults(SearchInfo word);
 	
 private:
 	static Database* instance;
@@ -23,6 +22,8 @@ private:
 	void BuildSaveData();
 	void BuildInfos();
 	void LoadInfos();
+	static vector<wstring> GetAllPath(string directory);
+	static bool FileExists(string path);
 	Database();
 };
 

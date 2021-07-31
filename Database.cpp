@@ -29,16 +29,9 @@ vector<wstring> Database::GetAllPath(string directory)
 	return result;
 }
 
-SearchResult Database::GetResults(wstring word)
+SearchResult Database::GetResults(SearchInfo word)
 {
-	vector<size_t> infoKeys = infos.getInfos(word);
-	vector<FileInfo> result;
-	for (size_t key : infoKeys)
-	{
-		result.push_back(FileInfo::GetFileInfo(key));
-	}
-
-	return SearchResult(result);
+	
 }
 
 Database Database::GetInstance()

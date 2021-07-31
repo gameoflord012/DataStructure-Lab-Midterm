@@ -25,5 +25,6 @@ public:
 
 	SearchInfo(wstring syntax, SearchType searchType);
 	SearchInfo(int minCost, int maxCost);
+	SearchInfo(int cost);
 };
 
