@@ -20,6 +20,7 @@ private:
 	Trie<size_t> searchByWord;
 	Trie<size_t> searchByHashtag;
 	Trie<size_t> searchByFileType;
+	Trie<size_t> searchByTitle;
 	map<wstring, set<size_t>> searchByExtension;
 
 	void BuildSaveData();

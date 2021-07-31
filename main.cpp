@@ -18,8 +18,9 @@ int main()
 		data.GetResults(SearchInfo(L"Every")).AND(
 		data.GetResults(SearchInfo(L"IN"))).OR(
 		data.GetResults(SearchInfo(L"headline", SearchType::hashTag)).OR(
-		data.GetResults(SearchInfo(L"txt", SearchType::extension))
-	));
+		data.GetResults(SearchInfo(L"txt", SearchType::extension)).OR(
+		data.GetResults(SearchInfo(L"testtitle", SearchType::title))
+	)));
 	
 
 	for (FileInfo info : result.GetInfos())

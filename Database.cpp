@@ -41,6 +41,8 @@ SearchResult Database::GetResults(SearchInfo searchInfo)
 	case SearchType::cost:
 		break;
 	case SearchType::title:
+		for (size_t key : searchByTitle.getInfos(searchInfo.syntax))
+		{ result.push_back(key); }
 		break;
 	case SearchType::extension:	
 		for(size_t key : searchByExtension[searchInfo.syntax])
@@ -91,6 +93,7 @@ void Database::BuildDataStruct()
 {
 	Trie<size_t> wordSearching;
 	Trie<size_t> hashtagSearching;
+	Trie<size_t> titleSearching;
 	map<wstring, set<size_t>> extensionSearching;
 
 	for (wstring path : GetAllPath(SAVE_DATA_DIR))
@@ -99,8 +102,9 @@ void Database::BuildDataStruct()
 
 		json j; file >> j; FileInfo info = j.get<FileInfo>();
 
-		for (wstring s : info.contentWords) { wordSearching.insert(s, info.key); }
-		for (wstring s : info.hashtags) { hashtagSearching.insert(s, info.key); }
+		for (wstring s : info.contentWords) { wordSearching   .insert(s, info.key); }
+		for (wstring s : info.hashtags)     { hashtagSearching.insert(s, info.key); }
+		for (wstring s : info.titleWords)   { titleSearching  .insert(s, info.key); }
 		extensionSearching[info.extension].insert(info.key);
 
 		file.close();
@@ -111,7 +115,8 @@ void Database::BuildDataStruct()
 	file << json{ 
 		{"searchByWord", wordSearching},
 		{"searchByHashtag", hashtagSearching},
-		{"searchByExtension", extensionSearching}
+		{"searchByExtension", extensionSearching},
+		{"searchByTitle", titleSearching}
 	};
 
 	file.close();
@@ -124,6 +129,7 @@ void Database::LoadDataStruct()
 
 	searchByWord = j.at("searchByWord");
 	searchByHashtag = j.at("searchByHashtag");
+	searchByTitle = j.at("searchByTitle");
 	searchByExtension = j.at("searchByExtension").get<map<wstring, set<size_t>>>();
 
 	file.close();
