@@ -43,13 +43,15 @@ FileInfo::FileInfo(wstring pathInfo)
 	content = GetContent(file);
 	contentWords = GetWords(content, L"[a-z0-9]+");
 	titleWords = GetWords(title, L"[a-z0-9]+");
-
-	vector<wstring> hashtagsWithTag = GetWords(content, L"#[a-z0-9]+");
-	hashtags = GetWords(
-		accumulate(hashtagsWithTag.begin(), hashtagsWithTag.end(), wstring(L"")),
-		L"[a-z0-9]+");
+	hashtags = GetWords(CombineWords(GetWords(content, L"#[a-z0-9]+")), L"[a-z0-9]+");
+	costs = GetNumbers(CombineWords(GetWords(content, L"[$][0-9]+")));
 
 	file.close();
+}
+
+wstring FileInfo::CombineWords(std::vector<std::wstring> hashtagsWithTag)
+{
+	return accumulate(hashtagsWithTag.begin(), hashtagsWithTag.end(), wstring(L""));
 }
 
 vector<wstring> FileInfo::GetWords(wstring content, wstring regexSyntax)
@@ -68,6 +70,14 @@ vector<wstring> FileInfo::GetWords(wstring content, wstring regexSyntax)
 		content = sm.suffix().str();
 	}
 
+	return result;
+}
+
+vector<size_t> FileInfo::GetNumbers(wstring content)
+{
+	vector<size_t> result;
+	vector<wstring> words = GetWords(content, L"[0-9]+");
+	for (wstring word : words) result.push_back(stoull(word));
 	return result;
 }
 

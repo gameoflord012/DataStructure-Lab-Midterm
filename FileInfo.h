@@ -16,6 +16,7 @@ public:
 	vector<wstring> titleWords;
 	vector<wstring> contentWords;
 	vector<wstring> hashtags;
+	vector<size_t> costs;
 
 	FileInfo(wstring filePath);
 	FileInfo();
@@ -24,8 +25,10 @@ public:
 	static FileInfo GetFileInfo(size_t key);
 
 private:
+	wstring CombineWords(std::vector<std::wstring> hashtagsWithTag);
 	wstring GetContent(std::ifstream& fileStream);
 	vector<wstring> GetWords(wstring content, wstring regexSyntax);
+	vector<size_t> GetNumbers(wstring content);
 	size_t GetKey(wstring stringToHash);
 };
 
