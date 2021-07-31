@@ -31,22 +31,24 @@ vector<wstring> Database::GetAllPath(string directory)
 
 SearchResult Database::GetResults(SearchInfo searchInfo)
 {
-	vector<FileInfo> result;
+	vector<size_t> result;
 	switch (searchInfo.searchType)
 	{
 	case SearchType::word:
 		for (size_t key : searchByWord.getInfos(searchInfo.syntax))
-		{ result.push_back(FileInfo::GetFileInfo(key)); }
+		{ result.push_back(key); }
 		break;
 	case SearchType::cost:
 		break;
 	case SearchType::title:
 		break;
-	case SearchType::extension:		
+	case SearchType::extension:	
+		for(size_t key : searchByExtension[searchInfo.syntax])
+		{ result.push_back(key); }
 		break;
 	case SearchType::hashTag:
 		for (size_t key : searchByHashtag.getInfos(searchInfo.syntax))
-		{ result.push_back(FileInfo::GetFileInfo(key)); }
+		{ result.push_back(key); }
 		break;
 	case SearchType::synonyms:
 		break;

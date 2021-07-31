@@ -7,12 +7,13 @@ using namespace std;
 #pragma once
 class SearchResult
 {
-public:
-	vector<FileInfo> infos;
-	SearchResult(vector<FileInfo> infos);
-	SearchResult AND(SearchResult other);
-	SearchResult OR(SearchResult other);
-	SearchResult EXCLUDE(SearchResult other);
+public:	
+	SearchResult(const vector<size_t> &infos);
+	SearchResult(const set<size_t> &infos);
+	SearchResult AND(const SearchResult &other);
+	SearchResult OR(const SearchResult &other);
+	SearchResult EXCLUDE(const SearchResult &other);
+	vector<FileInfo> GetInfos();
 
 private:
 	set<size_t> keys;

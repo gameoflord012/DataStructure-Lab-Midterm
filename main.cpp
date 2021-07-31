@@ -17,11 +17,12 @@ int main()
 	SearchResult result = 
 		data.GetResults(SearchInfo(L"Every")).AND(
 		data.GetResults(SearchInfo(L"IN"))).OR(
-		data.GetResults(SearchInfo(L"headline", SearchType::hashTag)
+		data.GetResults(SearchInfo(L"headline", SearchType::hashTag)).OR(
+		data.GetResults(SearchInfo(L"txt", SearchType::extension))
 	));
 	
 
-	for (FileInfo info : result.infos)
+	for (FileInfo info : result.GetInfos())
 	{
 		wcout << info.title << " " << info.extension << endl;
 	}
