@@ -9,7 +9,7 @@ template<typename TInfo>
 class Trie
 {
 public:	
-	vector<vector<int>> tree;
+	vector<map<int, int>> tree;
 	map<int, vector<TInfo>> infos;
 	Trie();
 
@@ -27,7 +27,7 @@ inline int Trie<TInfo>::size()
 template<typename TInfo>
 inline Trie<TInfo>::Trie()
 {	
-	tree.push_back(vector<int>(1024, -1));
+	tree.push_back(map<int, int>());
 }
 
 template<typename TInfo>
@@ -38,10 +38,10 @@ inline void Trie<TInfo>::insert(wstring s, TInfo info)
 	{
 		char c = tolower(s[i]);
 
-		if (tree[currentNode][c] == -1)
+		if (tree[currentNode].count(c) == 0)
 		{
 			tree[currentNode][c] = size();
-			tree.push_back(vector<int>(1024, -1));
+			tree.push_back(map<int, int>());
 		}
 
 		currentNode = tree[currentNode][c];
