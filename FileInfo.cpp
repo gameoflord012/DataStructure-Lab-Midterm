@@ -62,7 +62,7 @@ vector<wstring> FileInfo::GetWords(wstring content, wstring regexSyntax)
 	while (regex_search(content, sm, rg)) {
 		for (auto x : sm)
 		{
-			result.push_back(x);
+			result.emplace_back(x);
 		}
 		content = sm.suffix().str();
 	}
@@ -74,7 +74,7 @@ vector<size_t> FileInfo::GetNumbers(wstring content)
 {
 	vector<size_t> result;
 	vector<wstring> words = GetWords(content, L"[0-9]+");
-	for (wstring word : words) result.push_back(stoull(word));
+	for (wstring word : words) result.emplace_back(stoull(word));
 	return result;
 }
 

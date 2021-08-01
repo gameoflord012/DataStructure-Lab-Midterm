@@ -24,7 +24,7 @@ vector<wstring> Database::GetAllPath(string directory)
 	vector<wstring> result;
 	for (const auto& entry : directory_iterator(directory))
 	{
-		result.push_back(entry.path().wstring());
+		result.emplace_back(entry.path().wstring());
 	}
 	return result;
 }
@@ -40,7 +40,7 @@ SearchResult Database::GetResults(SearchInfo searchInfo)
 	case SearchType::cost: // ==========================================================
 		for(auto it = searchByCost.lower_bound(searchInfo.minCost), end = searchByCost.upper_bound(searchInfo.maxCost); it != end; it++)
 		{ 
-			for (size_t key : it->second) result.push_back(key);
+			for (size_t key : it->second) result.emplace_back(key);
 		}
 		break;
 	case SearchType::title: // ==========================================================

@@ -28,7 +28,7 @@ inline int Trie<TInfo>::size()
 template<typename TInfo>
 inline Trie<TInfo>::Trie()
 {	
-	tree.push_back(map<int, int>());
+	tree.emplace_back(map<int, int>());
 }
 
 template<typename TInfo>
@@ -42,7 +42,7 @@ inline void Trie<TInfo>::insert(wstring s, TInfo info)
 		if (tree[currentNode].count(c) == 0)
 		{
 			tree[currentNode][c] = size();
-			tree.push_back(map<int, int>());
+			tree.emplace_back(map<int, int>());
 		}
 
 		currentNode = tree[currentNode][c];

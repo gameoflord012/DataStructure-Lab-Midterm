@@ -40,7 +40,7 @@ SearchResult SearchResult::EXCLUDE(const SearchResult &other)
 vector<FileInfo> SearchResult::GetInfos()
 {
 	vector<FileInfo> result;
-	for (size_t key : keys) result.push_back(FileInfo::GetFileInfo(key));
+	for (size_t key : keys) result.emplace_back(FileInfo::GetFileInfo(key));
 	return result;
 }
 
