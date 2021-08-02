@@ -23,6 +23,7 @@ private:
 	Trie<size_t> searchByTitle;
 	map<wstring, set<size_t>> searchByExtension;
 	map<size_t, set<size_t>> searchByCost;
+	map<string, vector<string>> searchBySynonym;
 
 	void BuildSaveData();
 	void BuildDataStruct();

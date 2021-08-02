@@ -7,7 +7,8 @@ using namespace std;
 #pragma once
 class SearchResult
 {
-public:	
+public:
+	SearchResult();
 	SearchResult(const vector<size_t> &infos);
 	SearchResult(const set<size_t> &infos);
 	SearchResult AND(const SearchResult &other);

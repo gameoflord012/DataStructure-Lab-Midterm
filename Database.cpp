@@ -1,5 +1,6 @@
 #include "Database.h"
 #include "JsonHandler.h"
+#include <string>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -8,6 +9,9 @@ using namespace std::filesystem;
 using namespace std;
 
 Database* Database::instance;
+
+#define WSTRING_2_STRING(x) (string(x.begin(), x.end()))
+#define STRING_2_WSTRING(x) (wstring(x.begin(), x.end()))
 
 Database::Database()
 {
@@ -31,7 +35,7 @@ vector<wstring> Database::GetAllPath(string directory)
 
 SearchResult Database::GetResults(SearchInfo searchInfo)
 {
-	vector<size_t> result;
+	set<size_t> result;
 	switch (searchInfo.searchType)
 	{
 	case SearchType::word: // ==========================================================
@@ -40,20 +44,28 @@ SearchResult Database::GetResults(SearchInfo searchInfo)
 	case SearchType::cost: // ==========================================================
 		for(auto it = searchByCost.lower_bound(searchInfo.minCost), end = searchByCost.upper_bound(searchInfo.maxCost); it != end; it++)
 		{ 
-			for (size_t key : it->second) result.emplace_back(key);
+			for (size_t key : it->second) result.insert(key);
 		}
 		break;
 	case SearchType::title: // ==========================================================
 		result = searchByTitle.getInfos(searchInfo.syntax);
 		break;
 	case SearchType::extension:	// ==========================================================
-		result.assign(searchByExtension[searchInfo.syntax].begin(), searchByExtension[searchInfo.syntax].end());
+		result.insert(searchByExtension[searchInfo.syntax].begin(), searchByExtension[searchInfo.syntax].end());
 		break;
 	case SearchType::hashTag: // ==========================================================
 		result = searchByHashtag.getInfos(searchInfo.syntax);
 		break;
 	case SearchType::synonyms: // ==========================================================
-		break;
+	{
+		SearchResult finalResult = SearchResult();
+		for (string synonym : searchBySynonym[WSTRING_2_STRING(searchInfo.syntax)])
+		{
+			finalResult = finalResult.OR(GetResults(SearchInfo(STRING_2_WSTRING(synonym), SearchType::word)));
+			cout << synonym << endl;
+		}
+		return finalResult;
+	}		
 	default:
 		break;
 	}
@@ -96,6 +108,7 @@ void Database::BuildDataStruct()
 	Trie<size_t> titleSearching;
 	map<wstring, set<size_t>> extensionSearching;
 	map<size_t, set<size_t>> costSearching;
+	map<string, vector<string>> synonymSearching;
 
 	for (wstring path : GetAllPath(SAVE_DATA_DIR))
 	{
@@ -106,23 +119,45 @@ void Database::BuildDataStruct()
 		for (wstring s : info.contentWords) { wordSearching   .insert(s, info.key); }
 		for (wstring s : info.hashtags)     { hashtagSearching.insert(s, info.key); }
 		for (wstring s : info.titleWords)   { titleSearching  .insert(s, info.key); }
-		extensionSearching[info.extension].insert(info.key);
 		for (size_t cost : info.costs) { costSearching[cost].insert(info.key); }
+		extensionSearching[info.extension].insert(info.key);
 
 		file.close();
+	}	
+
+	ifstream fileIn(SYNONYM_DATA_PATH);
+
+	while (!fileIn.eof())
+	{
+		json j; 
+		try
+		{
+			fileIn >> j;
+		}
+		catch(...)
+		{
+			break;
+		}
+
+		string word = j.at("word");
+		vector<string> synonyms = j.at("synonyms");
+		for (string synonyms : synonyms) synonymSearching[word].push_back(synonyms);
 	}
 
-	ofstream file(DATA_BASE_PATH);
+	fileIn.close();
 
-	file << json{
+	ofstream fileOut(DATA_BASE_PATH);
+
+	fileOut << json{
 		{"searchByWord", wordSearching},
 		{"searchByHashtag", hashtagSearching},
 		{"searchByExtension", extensionSearching},
 		{"searchByTitle", titleSearching},
-		{"searchByCost", costSearching}
+		{"searchByCost", costSearching},
+		{"searchBySynonym", synonymSearching}
 	};
 
-	file.close();
+	fileOut.close();
 }
 
 void Database::LoadDataStruct()
@@ -135,6 +170,7 @@ void Database::LoadDataStruct()
 	searchByTitle = j.at("searchByTitle");
 	searchByExtension = j.at("searchByExtension").get<map<wstring, set<size_t>>>();
 	searchByCost = j.at("searchByCost").get<map<size_t, set<size_t>>>();
+	searchBySynonym = j.at("searchBySynonym").get<map<string, vector<string>>>();
 
 	file.close();
 }

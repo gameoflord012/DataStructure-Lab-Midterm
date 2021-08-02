@@ -1,5 +1,9 @@
 #include "SearchResult.h"
 
+SearchResult::SearchResult()
+{
+}
+
 SearchResult::SearchResult(const vector<size_t> &keys)
 {
 	for (size_t key : keys) this->keys.insert(key);

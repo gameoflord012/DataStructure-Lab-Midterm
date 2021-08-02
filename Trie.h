@@ -16,7 +16,7 @@ public:
 
 	int size();
 	void insert(wstring s, TInfo info);
-	vector<TInfo> getInfos(wstring s);
+	set<TInfo> getInfos(wstring s);
 };
 
 template<typename TInfo>
@@ -52,7 +52,7 @@ inline void Trie<TInfo>::insert(wstring s, TInfo info)
 }
 
 template<typename TInfo>
-inline vector<TInfo> Trie<TInfo>::getInfos(wstring s)
+inline set<TInfo> Trie<TInfo>::getInfos(wstring s)
 {
 	int currentNode = 0;
 	for (int i = 0; i < s.size(); i++)
@@ -61,12 +61,11 @@ inline vector<TInfo> Trie<TInfo>::getInfos(wstring s)
 
 		if (tree[currentNode][c] == -1)
 		{
-			return vector<TInfo>();
+			return set<TInfo>();
 		}
 
 		currentNode = tree[currentNode][c];
 	}
 
-	set<TInfo> resultInfos = infos[currentNode];
-	return vector<TInfo>(resultInfos.begin(), resultInfos.end());
+	return infos[currentNode];	
 }

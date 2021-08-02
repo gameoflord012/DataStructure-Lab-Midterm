@@ -118,7 +118,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>SOLUTION_DIR=R"($(SolutionDir))";DATA_DIR=R"($(SolutionDir)Search Engine-Data\Search Engine-Data\)";SAVE_DATA_DIR=R"($(SolutionDir)Search Engine-Data\SaveData\)";SAVE_DATA_PATH=R"($(SolutionDir)Search Engine-Data\SaveData\data.txt)";DATA_BASE_PATH=R"($(SolutionDir)Search Engine-Data\SaveData\database.txt)"</PreprocessorDefinitions>
+      <PreprocessorDefinitions>SOLUTION_DIR=R"($(SolutionDir))";DATA_DIR=R"($(SolutionDir)Search Engine-Data\Search Engine-Data\)";SAVE_DATA_DIR=R"($(SolutionDir)Search Engine-Data\SaveData\)";SAVE_DATA_PATH=R"($(SolutionDir)Search Engine-Data\SaveData\data.txt)";DATA_BASE_PATH=R"($(SolutionDir)Search Engine-Data\SaveData\database.txt)";SYNONYM_DATA_PATH=R"($(SolutionDir)Search Engine-Data\thesaurus-master\en_thesaurus.jsonl)"</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -133,7 +133,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>SOLUTION_DIR=R"($(SolutionDir))";DATA_DIR=R"($(SolutionDir)Search Engine-Data\Search Engine-Data\)";SAVE_DATA_DIR=R"($(SolutionDir)Search Engine-Data\SaveData\)";SAVE_DATA_PATH=R"($(SolutionDir)Search Engine-Data\SaveData\data.txt)";DATA_BASE_PATH=R"($(SolutionDir)Search Engine-Data\SaveData\database.txt)"</PreprocessorDefinitions>
+      <PreprocessorDefinitions>SOLUTION_DIR=R"($(SolutionDir))";DATA_DIR=R"($(SolutionDir)Search Engine-Data\Search Engine-Data\)";SAVE_DATA_DIR=R"($(SolutionDir)Search Engine-Data\SaveData\)";SAVE_DATA_PATH=R"($(SolutionDir)Search Engine-Data\SaveData\data.txt)";DATA_BASE_PATH=R"($(SolutionDir)Search Engine-Data\SaveData\database.txt)";SYNONYM_DATA_PATH=R"($(SolutionDir)Search Engine-Data\thesaurus-master\en_thesaurus.jsonl)"</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
