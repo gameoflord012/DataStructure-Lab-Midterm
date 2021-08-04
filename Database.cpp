@@ -118,8 +118,10 @@ void Database::BuildDataStruct()
 
 		for (wstring s : info.contentWords) { wordSearching   .insert(s, info.key); }
 		for (wstring s : info.hashtags)     { hashtagSearching.insert(s, info.key); }
-		for (wstring s : info.titleWords)   { titleSearching  .insert(s, info.key); }
-		for (size_t cost : info.costs) { costSearching[cost].insert(info.key); }
+		for (wstring s : info.titleWords)   { 
+			titleSearching  .insert(s, info.key); 
+		}
+		for (size_t cost : info.costs) { costSearching[cost]  .insert(info.key); }
 		extensionSearching[info.extension].insert(info.key);
 
 		file.close();

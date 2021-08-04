@@ -59,7 +59,7 @@ inline set<TInfo> Trie<TInfo>::getInfos(wstring s)
 	{
 		wchar_t c = tolower(s[i]);
 
-		if (tree[currentNode][c] == -1)
+		if (tree[currentNode].count(c) == 0)
 		{
 			return set<TInfo>();
 		}

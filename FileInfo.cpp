@@ -35,13 +35,13 @@ FileInfo::FileInfo(wstring pathInfo)
 
 	key = GetKey(pathInfo);
 	fileDataPath = GetPath(key);
-	extension = CombineWords(GetWords(path(pathInfo).extension(), L"[a-z0-9]+"));
+	extension = CombineWords(GetWords(path(pathInfo).extension(), L"[\\w\\d]+"));
 	title = path(pathInfo).filename().replace_extension();
 	content = GetContent(file);
-	contentWords = GetWords(content, L"[a-z0-9]+");
-	titleWords = GetWords(title, L"[a-z0-9]+");
-	hashtags = GetWords(CombineWords(GetWords(content, L"#[a-z0-9]+")), L"[a-z0-9]+");
-	costs = GetNumbers(CombineWords(GetWords(content, L"[$][0-9]+")));
+	contentWords = GetWords(content, L"[\\w\\d]+");
+	titleWords = GetWords(title, L"[\\w\\d]+");
+	hashtags = GetWords(CombineWords(GetWords(content, L"#[\\w\\d]+")), L"[\\w\\d]+");
+	costs = GetNumbers(CombineWords(GetWords(content, L"$[\\d]+")));
 
 	file.close();
 }

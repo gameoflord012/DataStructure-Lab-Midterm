@@ -23,7 +23,7 @@ int main()
 		data.GetResults(SearchInfo(1, 1000000))
 	))));*/
 
-	SearchResult result = data.GetResults(SearchInfo(L"a", SearchType::synonyms));
+	SearchResult result = data.GetResults(SearchInfo(L"Test1", SearchType::title));
 
 	for (FileInfo info : result.GetInfos()) wcout << info.title << "." << info.extension << endl;
 }
