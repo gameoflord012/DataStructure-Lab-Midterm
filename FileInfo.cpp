@@ -41,7 +41,7 @@ FileInfo::FileInfo(wstring pathInfo)
 	contentWords = GetWords(content, L"[\\w\\d]+");
 	titleWords = GetWords(title, L"[\\w\\d]+");
 	hashtags = GetWords(CombineWords(GetWords(content, L"#[\\w\\d]+")), L"[\\w\\d]+");
-	costs = GetNumbers(CombineWords(GetWords(content, L"$[\\d]+")));
+	costs = GetNumbers(CombineWords(GetWords(content, L"[$][\\d]+")));
 
 	file.close();
 }
