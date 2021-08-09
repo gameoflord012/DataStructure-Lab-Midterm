@@ -15,7 +15,7 @@ FileInfo::FileInfo()
 
 string FileInfo::GetPath(size_t key)
 {
-	return SAVE_DATA_DIR + to_string(key) + ".txt";
+	return BUILD_DATA_DIR + to_string(key) + ".txt";
 }
 
 FileInfo FileInfo::GetFileInfo(size_t key)

@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <set>
 
 using namespace std;
 
@@ -14,6 +15,7 @@ class Database
 public:
 	static Database GetInstance();
 	SearchResult GetResults(SearchInfo searchInfo);
+	bool CointainStopWord(wstring stopWord);
 	
 private:
 	static Database* instance;
@@ -24,6 +26,7 @@ private:
 	map<wstring, set<size_t>> searchByExtension;
 	map<size_t, set<size_t>> searchByCost;
 	map<string, vector<string>> searchBySynonym;
+	set<wstring> stopWords;
 
 	void BuildSaveData();
 	void BuildDataStruct();

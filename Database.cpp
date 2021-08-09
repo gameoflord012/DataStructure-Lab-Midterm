@@ -4,6 +4,8 @@
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+#include <sstream>
+#include <set>
 
 using namespace std::filesystem;
 using namespace std;
@@ -73,6 +75,11 @@ SearchResult Database::GetResults(SearchInfo searchInfo)
 	return SearchResult(result);
 }
 
+bool Database::CointainStopWord(wstring stopWord)
+{
+	return stopWords.count(stopWord) > 0;
+}
+
 Database Database::GetInstance()
 {
 	if (instance == nullptr)
@@ -91,7 +98,7 @@ bool Database::FileExists(string path)
 
 void Database::BuildSaveData()
 {
-	for (wstring path : GetAllPath(DATA_DIR))
+	for (wstring path : GetAllPath(RAW_DATA_DIR))
 	{
 		FileInfo info = FileInfo(path);
 		ofstream file(info.fileDataPath);
@@ -109,8 +116,9 @@ void Database::BuildDataStruct()
 	map<wstring, set<size_t>> extensionSearching;
 	map<size_t, set<size_t>> costSearching;
 	map<string, vector<string>> synonymSearching;
+	set<wstring> stopWords;
 
-	for (wstring path : GetAllPath(SAVE_DATA_DIR))
+	for (wstring path : GetAllPath(BUILD_DATA_DIR))
 	{
 		ifstream file(path);
 
@@ -148,6 +156,19 @@ void Database::BuildDataStruct()
 
 	fileIn.close();
 
+	wifstream wfile(STOPWORDS_DATA_PATH);
+	wstringstream wss;
+	wss << wfile.rdbuf();
+
+	while (!wss.eof())
+	{
+		wstring stopWord;
+		wss >> stopWord;
+		stopWords.insert(stopWord);
+	}
+
+	wfile.close();
+
 	ofstream fileOut(DATA_BASE_PATH);
 
 	fileOut << json{
@@ -156,7 +177,8 @@ void Database::BuildDataStruct()
 		{"searchByExtension", extensionSearching},
 		{"searchByTitle", titleSearching},
 		{"searchByCost", costSearching},
-		{"searchBySynonym", synonymSearching}
+		{"searchBySynonym", synonymSearching},
+		{"stopWords", stopWords}
 	};
 
 	fileOut.close();
@@ -173,6 +195,7 @@ void Database::LoadDataStruct()
 	searchByExtension = j.at("searchByExtension").get<map<wstring, set<size_t>>>();
 	searchByCost = j.at("searchByCost").get<map<size_t, set<size_t>>>();
 	searchBySynonym = j.at("searchBySynonym").get<map<string, vector<string>>>();
+	stopWords = j.at("stopWords").get<set<wstring>>();
 
 	file.close();
 }
