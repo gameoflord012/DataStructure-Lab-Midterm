@@ -145,7 +145,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="console.cpp" />
     <ClCompile Include="Database.cpp" />
+    <ClCompile Include="engine.cpp" />
     <ClCompile Include="FileInfo.cpp" />
     <ClCompile Include="JsonHandler.cpp" />
     <ClCompile Include="main.cpp" />
@@ -153,7 +155,9 @@
     <ClCompile Include="SearchResult.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="console.h" />
     <ClInclude Include="Database.h" />
+    <ClInclude Include="engine.h" />
     <ClInclude Include="FileInfo.h" />
     <ClInclude Include="JsonHandler.h" />
     <ClInclude Include="SearchInfo.h" />
