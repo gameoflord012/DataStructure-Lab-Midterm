@@ -1,8 +1,4 @@
-#include <stdio.h>
-#include <conio.h>
 #include "console.h"
-
-using namespace std;
 
 int inputKey()
 {
@@ -79,3 +75,25 @@ void TextColor(int color)
 {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
 }
+
+int getWidth()
+{
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	int columns;
+
+	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+	columns = csbi.srWindow.Right - csbi.srWindow.Left + 1;
+
+	return columns;
+}
+
+int getHeight()
+{
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	int rows;
+	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+	rows = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
+
+	return rows;
+}
+

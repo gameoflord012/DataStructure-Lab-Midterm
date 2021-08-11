@@ -125,6 +125,8 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EntryPointSymbol>
+      </EntryPointSymbol>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -147,6 +149,7 @@
   <ItemGroup>
     <ClCompile Include="console.cpp" />
     <ClCompile Include="Database.cpp" />
+    <ClCompile Include="display.cpp" />
     <ClCompile Include="engine.cpp" />
     <ClCompile Include="FileInfo.cpp" />
     <ClCompile Include="JsonHandler.cpp" />
@@ -157,6 +160,7 @@
   <ItemGroup>
     <ClInclude Include="console.h" />
     <ClInclude Include="Database.h" />
+    <ClInclude Include="display.h" />
     <ClInclude Include="engine.h" />
     <ClInclude Include="FileInfo.h" />
     <ClInclude Include="JsonHandler.h" />

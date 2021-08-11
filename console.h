@@ -19,15 +19,20 @@
 
 #define default_ColorCode		7
 
+
 #define key_Up		1072
 #define key_Down	1080
 #define key_Left	1075
 #define key_Right	1077
+#define key_enter	13
 #define key_none	-1
 
 //--------------------------------------------------------
-
+#include <stdio.h>
+#include <conio.h>
 #include <windows.h>
+
+using namespace std;
 
 //--------------------------------------------------------
 
@@ -46,6 +51,12 @@ int whereX();
 int whereY();
 
 void TextColor(int color);
+
+void BGColor(int color);
+
+int getWidth();
+
+int getHeight();
 //end----------------------Screen----------------------end
 
 

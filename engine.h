@@ -5,31 +5,30 @@
 #include<vector>
 #include<algorithm>
 
+#include "console.h" 
+
 #include "Database.h"
 #include "Trie.h"
 #include "JsonHandler.h"
 #include "SearchInfo.h"
 
-//#include "console.h"
-
 using namespace std;
 
-//-----------------------------------
-bool searchStopWord(string tmp, Database _data);
+//--------------ENGINE---------------
 void searchData(vector<string>& data, SearchResult& result, Database _data);
 vector<string> searchResults(string query, SearchResult& results, Database database);
 
 bool getRange(string tmp, int& num1, int& num2);
 
 //---------HISTORY-------------------------
-void History(vector<string>& res, string query);
+int History(vector<string>& res, string query, int choice);
 void clearHistory();
 
 //---------OPTIONs---------------
 bool is_accept(char& key);
 bool is_Number(char key);
 bool is_Word(char key);
-string SenFilter(string sen);
-void OutputResult(wstring filename, vector<int> pos);
-bool checkOperator(string query);
-int WordinSen(string sen);
+string SentenceFilter(string sen);
+void OutputResult(wstring filename, vector<string> word);
+int WordCnt(string sen);
+vector<int> searchpos(wstring fn, vector<string> word);

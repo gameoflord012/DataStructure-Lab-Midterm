@@ -1,17 +1,6 @@
 ﻿#include "engine.h"
 
-bool searchStopWord(string tmp, Database _data)
-{
-	wstring get = wstring(tmp.begin(), tmp.end());
-	SearchResult result = _data.GetResults(SearchInfo(get, SearchType::word));
-	for (FileInfo info : result.GetInfos())
-	{
-		if (info.title + L"." + info.extension == L"stopword.txt")
-			return true;
-	}
-	return false;
-}
-
+//----------------ENGINE-----------------------
 vector<string> searchResults(string query, SearchResult& results, Database database)
 {
 	vector<string> data;
@@ -20,6 +9,9 @@ vector<string> searchResults(string query, SearchResult& results, Database datab
 	string _get;
 	while (ss >> tmp)
 	{
+		tmp = SentenceFilter(tmp);  //lowercase
+		get = tmp.substr(0, 8);//intitle:
+
 		if (tmp[0] == '$') //search range
 		{
 			if (!_get.empty()) _get.pop_back();
@@ -29,8 +21,7 @@ vector<string> searchResults(string query, SearchResult& results, Database datab
 			//data.push_back(tmp);
 			_get = "";
 		}
-		
-		get = tmp.substr(0, 8);//intitle:
+
 		if (get == "intitle:")
 		{
 			get = tmp.substr(8);
@@ -40,17 +31,22 @@ vector<string> searchResults(string query, SearchResult& results, Database datab
 			data.push_back(get);
 			_get = "";
 		}
-		else if (tmp[0] == '"') //exact match and wildcard
+
+		if (tmp[0] == '"') //exact match and wildcard
 		{
 			//if (!_get.empty()) _get.pop_back();
 			//data.push_back(_get);
+			tmp.erase(tmp.begin(), tmp.begin() + 1);
 			if (tmp.back() != '"')
 			{
-				tmp.erase(tmp.begin(), tmp.begin() + 1);
+				bool check = false;
 				do
 				{
 					if (tmp.back() == '"')
+					{
+						check = true;
 						tmp.erase(tmp.end() - 1, tmp.end());
+					}
 
 					_get += tmp + ' ';
 
@@ -58,35 +54,41 @@ vector<string> searchResults(string query, SearchResult& results, Database datab
 						break;
 				} while (ss >> tmp);
 			}
+			else
+				tmp.erase(tmp.end() - 1, tmp.end());
 		}
-		else if (tmp[0] == '~')
+
+		if (tmp[0] == '~')
 		{
 			data.push_back("sym");
 			tmp.erase(tmp.begin(), tmp.begin() + 1);
 			data.push_back(tmp);
 		}
-		else if (tmp == "OR")
+
+		if (tmp == "or")
 		{
 			if (!_get.empty()) _get.pop_back();
 			data.push_back(_get);
 			data.push_back("OR");
 			_get = "";
 		}
-		else if (tmp == "AND" || tmp == "filetype:txt")
+		else if (tmp == "and" || tmp == "filetype:txt")
 		{
 			if (!_get.empty()) _get.pop_back();
 			data.push_back(_get);
 			data.push_back("AND");
 			_get = "";
 		}
-		else if (searchStopWord(tmp, database))
+		else if (database.CointainStopWord(wstring(tmp.begin(), tmp.end())))
 			continue;
 		else
 			_get += tmp + " ";
 	}
 	if (!_get.empty()) _get.pop_back();
 	if (!_get.empty()) data.push_back(_get);
+
 	searchData(data, results, database);
+
 	return data;  //don't care it ¯\_(ツ)_/¯
 }
 
@@ -98,7 +100,7 @@ void searchData(vector<string>& data, SearchResult& result, Database database)
 	for (auto i = data.begin(); i != data.end(); ++i)
 	{
 		//cout << "DEBUG: " << *i << endl;
-		
+
 		tmp = *i;
 		if (tmp == "OR")
 		{
@@ -209,92 +211,70 @@ bool getRange(string tmp, int& num1, int& num2)
 	return true;
 }
 
-//-----------------HISTORY---------------
-void History(vector<string>& res, string query)
+//-----------------HISTORY---------------------
+int History(vector<string>& res, string query, int choice)
 {
+	query = SentenceFilter(query);
 	res.push_back(query);
-	cout << "Choose query:" << endl << "0. " << query << endl;
+	if (query.empty())
+		return 0;
+	TextColor(ColorCode_Green);
+	cout << "Suggests:";
+	TextColor(default_ColorCode);
+	gotoXY(1, whereY() + 1);
 
+	choice == 0 ? TextColor(20) : TextColor(7);
+	cout << "0. " << query;
+	TextColor(default_ColorCode);
 	int i = 1;
 	ifstream input; input.open("history.txt");
 	string tmp;
 	while (!input.eof())
 	{
 		getline(input, tmp);
+		tmp = SentenceFilter(tmp);
 		if (tmp == "" || query == tmp || tmp.find(query) == -1)
 		{
 			continue;
 		}
-
-		cout << i << ". " << tmp << endl;
-
 		res.push_back(tmp);
+		gotoXY(1, whereY() + 1);
+		if (choice == i)
+			TextColor(20);
+		cout << i << ". " << tmp;
+		TextColor(default_ColorCode);
 		++i;
 	}
 	input.close();
-	ofstream output; output.open("history.txt", ios::app);
-	output << query << endl;
-	output.close();
+	return i;
 }
 
 void clearHistory()
 {
-	ifstream file; file.open("history.txt", ios::out | ios::trunc);
+	ifstream file;
+	file.open("history.txt", ios::out | ios::trunc);
 	file.close();
 }
 
 
-//------------------OPTIONS----------------
-bool checkOperator(string query) {
-	stringstream ss(query);
-	string tmp;
-	while (ss >> tmp)
-	{
-		string get; get = tmp.substr(0, 8);
-		if (get == "intitle:") return false;
-		if (tmp == "AND" || tmp == "OR" || tmp[0] == '-' || tmp == "*" || tmp == "filetype:txt" || tmp[0] == '"' || tmp.back() == '*')
-		{
-			return false;
-		}
-		int length = tmp.length();
-		for (int i = 0; i <= length - 3; ++i)
-		{
-			if (tmp[i] == '.' && tmp[i + 1] == '.')
-			{
-				return false;
-			}
-		}
-	}
-	return true;
-}
-
-void OutputResult(wstring fn, vector<int> pos)
+//------------------OPTIONS------------------------
+void OutputResult(wstring data, vector<string> word)
 {
+	vector<int> pos;
+	pos = searchpos(data, word);
 	if (!pos.size())
 		return;
 
-	ifstream f;
-	f.open(fn);
-	if (!f.is_open())
-	{
-		cout << "Error" << endl;
-		return;
-	}
+	string tmp;
+	stringstream _ss(string(data.begin(), data.end()));
 
-	string title;
-	getline(f, title);
-	cout << title << endl;
-
-	f.clear();
-	f.seekg(0, ios::beg);
-	int cnt = 0, cur = 0, totalLength = -1;
-	while (!f.eof())
+	int cnt = 0, i = 0, totalLen = -1;
+	while (!_ss.eof())
 	{
-		string tmp;
-		getline(f, tmp, '.');
+		getline(_ss, tmp, '.');
 		if (tmp.length() && is_Number(tmp.back()))  //decimal number case
 		{
-			string next; getline(f, next, '.');
+			string next; getline(_ss, next, '.');
 			if (next.length() && is_Number(next[0]))
 			{
 				tmp = tmp + '.' + next;
@@ -303,11 +283,11 @@ void OutputResult(wstring fn, vector<int> pos)
 				tmp = tmp + " " + next;
 		}
 
-		tmp = SenFilter(tmp);
-		int NumWord = WordinSen(tmp);
-		totalLength += NumWord;
+		tmp = SentenceFilter(tmp);
+		int NumWord = WordCnt(tmp);
+		totalLen += NumWord;
 
-		if (pos[cur] > totalLength)
+		if (pos[i] > totalLen)
 		{
 			cnt += NumWord;
 			continue;
@@ -316,54 +296,53 @@ void OutputResult(wstring fn, vector<int> pos)
 		stringstream ss(tmp);
 		while (ss >> tmp)
 		{
-			if (cur < pos.size() && pos[cur] == cnt)
+			if (i < pos.size() && pos[i] == cnt)
 			{
-				++cur;
-				for (int i = 0; i < tmp.length(); ++i) if (is_Word(tmp[i]))
-				{
-					tmp[i] -= 32;
-				}
-				//TextColor(10);
+				++i;
+				for (int ii = 0; ii < tmp.length(); ++ii)
+					is_Word(tmp[ii]) ? tmp[ii] -= 32 : tmp[ii];
+
+				TextColor(ColorCode_Red);  //RED
 				cout << tmp << " ";
-				//TextColor(7);
+				TextColor(default_ColorCode);  //DarkWhite
 			}
 			else cout << tmp << " ";
 			++cnt;
 		}
 		cout << "..." << endl;
-		if (cur >= pos.size())
+		if (i >= pos.size())
 		{
-			f.close();
 			return;
 		}
 	}
-	f.close();
 }
 
-bool is_accept(char& k)
+bool is_accept(char& k)  //convert to lowercase
 {
 	if (k >= 65 && k <= 90)
 	{
 		k = int(k) + 32;
 		return true;
 	}
-	if ((k >= 48 && k <= 57) || (k >= 97 && k <= 122))
+	else if ((k >= 48 && k <= 57) || (k >= 97 && k <= 122))
 	{
 		return true;
 	}
-	if (k == '\n')
+	else if (k == '\n')
 	{
 		k = ' ';
 		return true;
 	}
-	if (k == '—') {
+	else if (k == '—')
+	{
 		k = '-';
 		return true;
 	}
-	if (k == ' ' || k == '$' || k == '%' || k == '#' || k == '-')
+	else if (k == ' ' || k == '$' || k == '%' || k == '#' || k == '-' || k == '"' || k == ':' || k == '$')
 	{
 		return true;
 	}
+
 	return false;
 }
 
@@ -373,6 +352,7 @@ bool is_Number(char k)
 	k >= 48 && k <= 57 ? check = true : check = false;
 	return check;
 }
+
 bool is_Word(char k)
 {
 	bool check;
@@ -380,7 +360,7 @@ bool is_Word(char k)
 	return check;
 }
 
-string SenFilter(string s)
+string SentenceFilter(string s)
 {
 	string rs;
 	int len = s.length();
@@ -392,23 +372,22 @@ string SenFilter(string s)
 			{
 				++i;
 			}
-			else if (i + 1 != len && s[i] == '.' && is_Number(s[i - 1]) && is_Number(s[i + 1]))  //so thap phan
+			else if (i + 1 != len && s[i] == '.' && is_Number(s[i - 1]) && is_Number(s[i + 1]))  //decimal
 			{
 				rs.append(s, i, 1);
 			}
 		}
 		else
-			rs.append(s, i, 1); //get 1 
+			rs.append(s, i, 1); //get one char
 	}
 	return rs;
 }
 
-int WordinSen(string sen)
+int WordCnt(string s)
 {
-	stringstream ss(sen);
+	stringstream ss(s);
 	int cnt = 0;
 	string tmp;
-
 	while (ss >> tmp)
 	{
 		++cnt;
@@ -416,3 +395,30 @@ int WordinSen(string sen)
 	return cnt;
 }
 
+vector<int> searchpos(wstring data, vector<string> word)
+{
+	string tmp;
+	stringstream _ss(string(data.begin(), data.end()));
+	int cnt = 0;
+	vector<int> pos;
+	while (_ss >> tmp)
+	{
+		//cout << "WORD: " << tmp << endl;
+		for (auto i = word.begin(); i < word.end(); i++)
+		{
+			stringstream ss(*i);
+			string tmp2;
+			while (ss >> tmp2)
+			{
+				tmp2 = SentenceFilter(tmp2);
+				tmp = SentenceFilter(tmp);
+				if (tmp2 == tmp) {
+					pos.push_back(cnt);
+					break;
+				}
+			}
+		}
+		cnt++;
+	}
+	return pos;
+}
