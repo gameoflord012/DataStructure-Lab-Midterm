@@ -11,14 +11,18 @@ vector<string> searchResults(string query, SearchResult& results, Database datab
 	{
 		tmp = SentenceFilter(tmp);  //lowercase
 		get = tmp.substr(0, 8);//intitle:
-
+		
 		if (tmp[0] == '$') //search range
 		{
 			if (!_get.empty()) _get.pop_back();
 			data.push_back(_get);
-			//data.push_back("NUM");
-			//ss >> tmp;
-			//data.push_back(tmp);
+			_get = "";
+		}
+
+		if (tmp[0] == '#') // Hashtag
+		{
+			if (!_get.empty()) _get.pop_back();
+			data.push_back(_get);
 			_get = "";
 		}
 
@@ -30,6 +34,19 @@ vector<string> searchResults(string query, SearchResult& results, Database datab
 			data.push_back("intitle:");
 			data.push_back(get);
 			_get = "";
+			continue;
+		}
+
+		get = tmp.substr(0, 9);//filetype:
+		if (get == "filetype:")
+		{
+			get = tmp.substr(9);
+			if (!_get.empty()) _get.pop_back();
+			data.push_back(_get);
+			data.push_back("filetype:");
+			data.push_back(get);
+			_get = "";
+			continue;
 		}
 
 		if (tmp[0] == '"') //exact match and wildcard
@@ -72,7 +89,7 @@ vector<string> searchResults(string query, SearchResult& results, Database datab
 			data.push_back("OR");
 			_get = "";
 		}
-		else if (tmp == "and" || tmp == "filetype:txt")
+		else if (tmp == "and")
 		{
 			if (!_get.empty()) _get.pop_back();
 			data.push_back(_get);
@@ -99,7 +116,7 @@ void searchData(vector<string>& data, SearchResult& result, Database database)
 	string tmp, get;
 	for (auto i = data.begin(); i != data.end(); ++i)
 	{
-		//cout << "DEBUG: " << *i << endl;
+		cout << "DEBUG: " << *i << endl;
 
 		tmp = *i;
 		if (tmp == "OR")
@@ -118,6 +135,10 @@ void searchData(vector<string>& data, SearchResult& result, Database database)
 		{
 			type = 2;
 		}
+		else if (tmp == "filetype:")
+		{
+			type = 5;
+		}
 		else if (tmp != " " || tmp != "")
 		{
 			int num1, num2;
@@ -126,6 +147,11 @@ void searchData(vector<string>& data, SearchResult& result, Database database)
 			{
 				num = getRange(tmp, num1, num2);
 				if (num) type = 3;
+			}
+			if (tmp[0] == '#')
+			{
+				tmp.erase(tmp.begin(), tmp.begin() + 1);
+				type = 4;
 			}
 			wstring _get;
 			_get = wstring(tmp.begin(), tmp.end());
@@ -148,13 +174,22 @@ void searchData(vector<string>& data, SearchResult& result, Database database)
 				tmp_result = database.GetResults(SearchInfo(num1, num2));
 				type = 0;
 				break;
+			case 4:
+				tmp_result = database.GetResults(SearchInfo(_get, SearchType::hashTag));
+				type = 0;
+				break;
+			case 5:
+				tmp_result = database.GetResults(SearchInfo(_get, SearchType::extension));
+				type = 0;
+				break;
 			default:
 				tmp_result = database.GetResults(SearchInfo(_get, SearchType::word));
 				type = 0;
 				break;
 			};
 
-			if (choice == -1) {
+			if (choice == -1) 
+			{
 				result = tmp_result;
 			}
 			else if (choice == 0)
