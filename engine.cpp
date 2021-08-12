@@ -1,4 +1,4 @@
-﻿#include "engine.h"
+#include "engine.h"
 
 //----------------ENGINE-----------------------
 vector<string> searchResults(string query, SearchResult& results, Database database)
@@ -116,7 +116,7 @@ void searchData(vector<string>& data, SearchResult& result, Database database)
 	string tmp, get;
 	for (auto i = data.begin(); i != data.end(); ++i)
 	{
-		cout << "DEBUG: " << *i << endl;
+		//cout << "DEBUG: " << *i << endl;
 
 		tmp = *i;
 		if (tmp == "OR")
