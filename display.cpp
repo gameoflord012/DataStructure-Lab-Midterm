@@ -111,7 +111,6 @@ display::display(Database data)
 				string query = "";
 				int key = ' ';
 				vector<string> res;
-				vector<FileInfo> info;
 
 				while (key != '\r')
 				{						
@@ -201,7 +200,8 @@ display::display(Database data)
 				vector<int> y_pos;
 
 				int NumOfRes = 0;
-				info = result.GetInfos();
+
+				vector<FileInfo> info = result.GetInfos();
 
 				for (int i = 0; i < info.size(); i++)
 				{
@@ -236,6 +236,7 @@ display::display(Database data)
 				for(;;)  // results
 				{
 					key = inputKey();
+
 					if (key == key_none)
 						continue;
 
@@ -249,12 +250,16 @@ display::display(Database data)
 						r_choice >= info.size() - 1 ? r_choice = info.size() - 1 : r_choice++;
 					}		
 
-					gotoXY(1, y_pos[r_choice]);
-					TextColor(ColorCode_Green);
-					cout << "Title: ";
-					TextColor(20);
-					wcout << info[r_choice].title << L"." << info[r_choice].extension;
-					TextColor(default_ColorCode);
+					for (int i = 0; i < info.size(); i++)
+					{
+						gotoXY(1, y_pos[i]);
+						TextColor(ColorCode_Green);
+						cout << "Title: ";
+						i == r_choice ? TextColor(20) : TextColor(ColorCode_Blue);
+						wcout << info[i].title << L"." << info[i].extension;
+						TextColor(default_ColorCode);
+					}
+
 
 					if (key == key_enter)
 					{
