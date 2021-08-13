@@ -35,8 +35,8 @@ int display::menu(int type, int choice)
 		const int max_choice = 4;
 		int color[max_choice];
 
-		choice < 0 ? choice = 0 : choice;
-		choice > max_choice - 1 ? choice = max_choice - 1 : choice;
+		choice < 0 ? choice = 0 : int();
+		choice > max_choice - 1 ? choice = max_choice - 1 : int();
 
 		for (int i = 0; i < max_choice; i++)
 			color[i] = default_ColorCode;
@@ -78,67 +78,64 @@ display::display(Database data)
 	clock_t begin, end;
 	int max_choice;
 	init();
-	max_choice = menu(1, 0);
+	max_choice = menu(1, -1);
 	for (;;)
 	{
 		key = inputKey();
 
 		if (key == key_Up)
-			choice < 0 ? choice = 0 : choice--;
+			m_choice < 0 ? m_choice = 0 : m_choice--;
 		if (key == key_Down)
-			choice > max_choice - 1 ? choice = max_choice - 1 : choice++;
+			m_choice > max_choice - 1 ? m_choice = max_choice - 1 : m_choice++;
 
 		if (key != -1)
-			menu(1, choice);
+			menu(1, m_choice);
 
 		if (key == 13)
 		{
 			SearchResult result;
-			if (choice == 0)
+			if (m_choice == 0)
 			{
 				clrscr();
 				init();
-				max_choice = menu(1, 0);
+				max_choice = menu(1, 0);  //max of menu choice
 
-				int X, Y, X1, Y1 = 0, X_INPUT;
-				int HM_CHOICE = 0;
-				int _choice = -1;
+				int X, Y, X1, Y1 = 0, X_INPUT, Y_END;
+				int HM_CHOICE = 0;  //max of history choice
+				int choice = -1;  //history choice
 
 				gotoXY(1, whereY() + 1);
 				cout << "Query > ";
 				X_INPUT = whereX();
 
-				string query, s_tmp;
+				string query = "";
 				int key = ' ';
 				vector<string> res;
 				while (key != '\r')
 				{						
 					key = inputKey();
-					if (key == -1)
+					if (key == key_none)
 						continue;
 
-					if (key < 1000)
+					if (key == key_backspace)
+					{			
+						choice = -1;
+						query.empty() ? void() : query.pop_back();
+
+						cout << char(key);			
+						cout << ' ';
+						whereX() > X_INPUT ? gotoXY(whereX() - 1, whereY()) : void();						
+					}
+					else if (key < 1000 && key != key_enter)
 					{
-						s_tmp.push_back(char(key));
+						query.push_back(char(key));
 						cout << char(key);
 					}
-					if (key == 8)
-					{			
-						_choice = -1;
-						s_tmp.clear();
-						for (int i = X_INPUT; i < width; i++)
-						{
-							gotoXY(i, whereY());
-							cout << ' ';							
-						}
-						gotoXY(X_INPUT, whereY());
-					}
-
 					else if (key == key_Up)
-						_choice < -1 ? _choice = -1 : _choice--;
+						choice < -1 ? choice = -1 : choice--;
 
 					else if (key == key_Down)
-						_choice > HM_CHOICE ? _choice = HM_CHOICE : _choice++;
+						choice > HM_CHOICE ? choice = HM_CHOICE : choice++;
 						
 					X = whereX();  Y = whereY();
 					
@@ -153,11 +150,10 @@ display::display(Database data)
 
 					if (key == key_enter)
 					{ 
-						if (_choice >= 1)
-							query = res[_choice];
-						else
-							query = s_tmp;
-						if ((_choice == 0 || _choice == -1) && !query.empty())
+						if (choice >= 1)
+							query = res[choice];
+
+						if ((choice == 0 || choice == -1) && !query.empty())
 						{
 							ofstream output; output.open("history.txt", ios::app);
 							output << query << endl;
@@ -166,10 +162,19 @@ display::display(Database data)
 						continue;
 					}						
 					
-					HM_CHOICE = History(res, s_tmp, _choice);
+					HM_CHOICE = History(res, query, choice);
 					Y1 = whereY();
 					gotoXY(X, Y);
 				}
+
+				if (query.empty())
+				{
+					clrscr();
+					init();
+					menu(1, 0);
+					continue;
+				}
+
 				Y = whereY() + 1;
 				for (int i = 0; i < width; i++)
 				{
@@ -179,7 +184,7 @@ display::display(Database data)
 
 				gotoXY(int(width/2) -3, whereY() + 1);
 				TextColor(ColorCode_Green);
-				cout << "RESULT" << endl;
+				cout << "RESULT              <'ESC' key to exit search>" << endl;
 				TextColor(default_ColorCode);
 				vector<string> tmp;
 
@@ -187,11 +192,15 @@ display::display(Database data)
 				tmp = searchResults(query, result, data);
 				end = clock();
 
+				Y = whereY();
+				vector<int> y_pos;
+
 				int NumOfRes = 0;
 				for (FileInfo info : result.GetInfos())
 				{
 					gotoXY(1, whereY());
 					TextColor(ColorCode_Green);
+					y_pos.push_back(whereY());
 					cout << "Title: ";
 					TextColor(ColorCode_Blue);
 					wcout << info.title << L"." << info.extension;
@@ -209,27 +218,99 @@ display::display(Database data)
 					gotoXY(1, whereY() + 1);
 					NumOfRes++;
 				}
-
+				Y_END = whereY();
 				cY > whereY() ? gotoXY(1, cY + 1) : gotoXY(1, whereY() + 1);
 				TextColor(ColorCode_Green);
 				cout << "Total result(s): " << NumOfRes << endl;
 				cout << " Search time: " << (float)(end - begin) / CLOCKS_PER_SEC << "s" << endl;
 				cout << " Output time: " << (float)(clock() - begin) / CLOCKS_PER_SEC << "s";
+
+				int r_choice = -1, cnt = 0; // r_choice : result choice // cnt : result index
+				bool show = false;   // show : update screen
+				for(;;)
+				{
+					key = inputKey();
+					if (key == key_none)
+						continue;
+
+					if (key == key_Up)
+					{
+						r_choice <= 0 ? r_choice = 0 : r_choice--;
+						show = true;
+					}
+
+					if (key == key_Down)
+					{
+						r_choice >= NumOfRes - 1 ? r_choice = NumOfRes - 1 : r_choice++;
+						show = true;
+					}						
+
+					cnt = 0;
+					if(show) for (FileInfo info : result.GetInfos())
+					{
+						gotoXY(1, y_pos[cnt]);
+						TextColor(ColorCode_Green);
+						cout << "Title: ";
+						r_choice == cnt ? TextColor(20) : TextColor(ColorCode_Blue);
+						wcout << info.title << L"." << info.extension;
+						cnt++;
+					}
+
+					if (key == key_enter)
+					{
+						for(int i = y_pos[0]; i <= Y_END; i++)
+							for (int z = 1; z < width; z++)
+							{
+								TextColor(default_ColorCode);
+								gotoXY(z, i); cout << ' ';
+							}
+
+						gotoXY(1, y_pos[0]);
+						cnt = 0;
+						for (FileInfo info : result.GetInfos())
+						{
+							if (r_choice == cnt)
+							{
+								TextColor(ColorCode_Green);
+								cout << "Title: ";
+								TextColor(ColorCode_Blue);
+								wcout << info.title << L"." << info.extension << endl;
+								TextColor(ColorCode_Green);
+								cout << "Content: " << endl;
+								TextColor(default_ColorCode);
+								wcout << info.content << endl;
+							}
+							cnt++;
+						}
+					}
+
+					if (key == key_esc)
+					{
+						clrscr();
+						init();
+						max_choice = menu(1, 0);
+						break;
+					}
+
+					show = false;
+				}
 			}
-			else if (choice == 1)
+			else if (m_choice == 1)
 			{
 				clrscr();
 				init();
+				max_choice = menu(1, 0);
 				clearHistory();
 				cY > whereY() ?	gotoXY(1, cY + 1) : gotoXY(1, whereY() + 1);
 				TextColor(ColorCode_Green);
 				cout << "History has been cleared...............!!!";
 				TextColor(default_ColorCode);
 			}
-			else if (choice == 2)
+			else if (m_choice == 2)
 			{
 				clrscr();
 				init();
+				max_choice = menu(1, 0);
 			}
 			else
 			{

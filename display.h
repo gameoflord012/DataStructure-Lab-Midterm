@@ -8,7 +8,7 @@ private:
 	int width = getWidth() - 1;
 	int key = 0;
 	int cX, cY;
-	int choice = 0;
+	int m_choice = 0;  //menu choice
 	void penguins();	
 	void penguins1();
 

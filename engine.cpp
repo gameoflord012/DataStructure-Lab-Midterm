@@ -335,7 +335,7 @@ void OutputResult(wstring data, vector<string> word)
 			{
 				++i;
 				for (int ii = 0; ii < tmp.length(); ++ii)
-					is_Word(tmp[ii]) ? tmp[ii] -= 32 : tmp[ii];
+					is_Word(tmp[ii]) ? tmp[ii] -= 32 : int();
 
 				TextColor(ColorCode_Red);  //RED
 				cout << tmp << " ";
@@ -447,7 +447,8 @@ vector<int> searchpos(wstring data, vector<string> word)
 			{
 				tmp2 = SentenceFilter(tmp2);
 				tmp = SentenceFilter(tmp);
-				if (tmp2 == tmp) {
+				if (tmp2 == tmp) 
+				{
 					pos.push_back(cnt);
 					break;
 				}
