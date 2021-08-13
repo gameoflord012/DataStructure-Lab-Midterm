@@ -38,6 +38,8 @@ void clrscr()
 	csbiInfo.dwCursorPosition.X = 0;
 	csbiInfo.dwCursorPosition.Y = 0;
 	SetConsoleCursorPosition(hConsoleOut, csbiInfo.dwCursorPosition);
+
+	system("color 3");
 }
 
 

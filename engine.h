@@ -1,3 +1,5 @@
+#pragma region Belong to Nhat
+
 #include<iostream>
 #include<fstream>
 #include<string>
