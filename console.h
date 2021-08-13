@@ -60,5 +60,5 @@ int getWidth();
 int getHeight();
 //end----------------------Screen----------------------end
 
-
 #endif
+#pragma region Belong to Nhat

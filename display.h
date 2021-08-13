@@ -1,10 +1,10 @@
-#pragma once
+#pragma region Belong to Nhat
 #include "engine.h"
 
 class display
 {
 private:
-	int height = 28;
+	int height = 25;
 	int width = getWidth() - 1;
 	int key = 0;
 	int cX, cY;
@@ -16,5 +16,5 @@ private:
 	int menu(int type, int choice);
 public:
 
-	display(Database data);	
+	display(Database data);
 };
