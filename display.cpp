@@ -111,11 +111,16 @@ display::display(Database data)
 				string query = "";
 				int key = ' ';
 				vector<string> res;
+				vector<FileInfo> info;
+
 				while (key != '\r')
 				{						
 					key = inputKey();
 					if (key == key_none)
 						continue;
+
+					if (key == key_esc)
+						break;
 
 					if (key == key_backspace)
 					{			
@@ -196,20 +201,22 @@ display::display(Database data)
 				vector<int> y_pos;
 
 				int NumOfRes = 0;
-				for (FileInfo info : result.GetInfos())
+				info = result.GetInfos();
+
+				for (int i = 0; i < info.size(); i++)
 				{
 					gotoXY(1, whereY());
-					TextColor(ColorCode_Green);
 					y_pos.push_back(whereY());
+					TextColor(ColorCode_Green);					
 					cout << "Title: ";
 					TextColor(ColorCode_Blue);
-					wcout << info.title << L"." << info.extension;
+					wcout << info[i].title << L"." << info[i].extension;
 					gotoXY(1, whereY() + 1);
 					TextColor(ColorCode_Green);
 					cout << "Content: ";
 					TextColor(default_ColorCode);
 					gotoXY(1, whereY() + 1);
-					OutputResult(info.content, tmp);
+					OutputResult(info[i].content, tmp);
 					for (int i = 0; i < width; i++)
 					{
 						gotoXY(i, whereY());
@@ -225,9 +232,8 @@ display::display(Database data)
 				cout << " Search time: " << (float)(end - begin) / CLOCKS_PER_SEC << "s" << endl;
 				cout << " Output time: " << (float)(clock() - begin) / CLOCKS_PER_SEC << "s";
 
-				int r_choice = -1, cnt = 0; // r_choice : result choice // cnt : result index
-				bool show = false;   // show : update screen
-				for(;;)
+				int r_choice = 0; // r_choice : result choice
+				for(;;)  // results
 				{
 					key = inputKey();
 					if (key == key_none)
@@ -236,25 +242,19 @@ display::display(Database data)
 					if (key == key_Up)
 					{
 						r_choice <= 0 ? r_choice = 0 : r_choice--;
-						show = true;
 					}
 
 					if (key == key_Down)
 					{
-						r_choice >= NumOfRes - 1 ? r_choice = NumOfRes - 1 : r_choice++;
-						show = true;
-					}						
+						r_choice >= info.size() - 1 ? r_choice = info.size() - 1 : r_choice++;
+					}		
 
-					cnt = 0;
-					if(show) for (FileInfo info : result.GetInfos())
-					{
-						gotoXY(1, y_pos[cnt]);
-						TextColor(ColorCode_Green);
-						cout << "Title: ";
-						r_choice == cnt ? TextColor(20) : TextColor(ColorCode_Blue);
-						wcout << info.title << L"." << info.extension;
-						cnt++;
-					}
+					gotoXY(1, y_pos[r_choice]);
+					TextColor(ColorCode_Green);
+					cout << "Title: ";
+					TextColor(20);
+					wcout << info[r_choice].title << L"." << info[r_choice].extension;
+					TextColor(default_ColorCode);
 
 					if (key == key_enter)
 					{
@@ -266,22 +266,15 @@ display::display(Database data)
 							}
 
 						gotoXY(1, y_pos[0]);
-						cnt = 0;
-						for (FileInfo info : result.GetInfos())
-						{
-							if (r_choice == cnt)
-							{
-								TextColor(ColorCode_Green);
-								cout << "Title: ";
-								TextColor(ColorCode_Blue);
-								wcout << info.title << L"." << info.extension << endl;
-								TextColor(ColorCode_Green);
-								cout << "Content: " << endl;
-								TextColor(default_ColorCode);
-								wcout << info.content << endl;
-							}
-							cnt++;
-						}
+
+						TextColor(ColorCode_Green);
+						cout << "Title: ";
+						TextColor(ColorCode_Blue);
+						wcout << info[r_choice].title << L"." << info[r_choice].extension << endl;
+						TextColor(ColorCode_Green);
+						cout << "Content: " << endl;
+						TextColor(default_ColorCode);
+						wcout << info[r_choice].content << endl;
 					}
 
 					if (key == key_esc)
@@ -291,8 +284,6 @@ display::display(Database data)
 						max_choice = menu(1, 0);
 						break;
 					}
-
-					show = false;
 				}
 			}
 			else if (m_choice == 1)

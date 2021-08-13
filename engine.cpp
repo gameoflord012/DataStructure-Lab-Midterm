@@ -249,6 +249,7 @@ bool getRange(string tmp, int& num1, int& num2)
 //-----------------HISTORY---------------------
 int History(vector<string>& res, string query, int choice)
 {
+	res.clear();
 	query = SentenceFilter(query);
 	res.push_back(query);
 	if (query.empty())
@@ -268,10 +269,12 @@ int History(vector<string>& res, string query, int choice)
 	{
 		getline(input, tmp);
 		tmp = SentenceFilter(tmp);
-		if (tmp == "" || query == tmp || tmp.find(query) == -1)
+
+		if (tmp == "" || query == tmp || tmp.find(query) == -1 || any_of(res.begin(), res.end(), [&](string& elem) { return elem == tmp; }))
 		{
 			continue;
 		}
+
 		res.push_back(tmp);
 		gotoXY(1, whereY() + 1);
 		if (choice == i)
