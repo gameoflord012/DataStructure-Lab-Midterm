@@ -232,6 +232,9 @@ display::display(Database data)
 				cout << " Search time: " << (float)(end - begin) / CLOCKS_PER_SEC << "s" << endl;
 				cout << " Output time: " << (float)(clock() - begin) / CLOCKS_PER_SEC << "s";
 
+				if (info.size() <= 0)
+					continue;
+
 				int r_choice = 0; // r_choice : result choice
 				for(;;)  // results
 				{
@@ -259,7 +262,6 @@ display::display(Database data)
 						wcout << info[i].title << L"." << info[i].extension;
 						TextColor(default_ColorCode);
 					}
-
 
 					if (key == key_enter)
 					{
