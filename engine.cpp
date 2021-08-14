@@ -206,8 +206,6 @@ void searchData(vector<string>& data, SearchResult& result, Database database)
 			{
 				result = result.AND(tmp_result);
 			}
-			cout << "choice " << choice << endl;
-			cout << "type " << type << endl;
 		}
 	}
 }
