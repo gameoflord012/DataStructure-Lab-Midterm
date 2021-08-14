@@ -32,5 +32,3 @@ bool is_Number(char key);
 bool is_Word(char key);
 string SentenceFilter(string sen);
 void OutputResult(wstring filename, vector<string> word);
-int WordCnt(string sen);
-vector<int> searchpos(wstring fn, vector<string> word);

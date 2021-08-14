@@ -224,7 +224,7 @@ display::display(Database data)
 					cout << "Content: ";
 					TextColor(default_ColorCode);
 					gotoXY(1, whereY() + 1);
-					OutputResult(info[i].content, tmp);
+					OutputResult(info[i].content, tmp);  //stealing part of the content
 
 					for (int i = 0; i < width; i++)
 					{
