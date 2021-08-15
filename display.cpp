@@ -297,7 +297,7 @@ display::display(Database data)
 						TextColor(ColorCode_Green);
 						cout << "Title: ";
 						i == r_choice ? TextColor(20) : TextColor(ColorCode_Blue);
-						wcout << info[i].title.c_str() << L"." << info[i].extension.c_str();
+						cout << string(info[r_choice].title.begin(), info[r_choice].title.end()) << "." << string(info[r_choice].extension.begin(), info[r_choice].extension.end());
 						TextColor(default_ColorCode);
 					}
 
