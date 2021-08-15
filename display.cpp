@@ -193,6 +193,7 @@ display::display(Database data)
 				begin = clock();
 				tmp = searchResults(query, result, data);
 				end = clock();
+				info = result.GetInfos();
 
 			goBack:						//go back here
 
@@ -214,7 +215,6 @@ display::display(Database data)
 				y_pos.clear();
 
 				int NumOfRes = 0;
-				info = result.GetInfos();
 				for (int i = 0; i < info.size(); i++)
 				{
 					gotoXY(1, whereY());
@@ -224,7 +224,7 @@ display::display(Database data)
 					TextColor(ColorCode_Green);					
 					cout << "Title: ";
 					TextColor(ColorCode_Blue);
-					wcout << info[i].title.c_str() << L"." << info[i].extension.c_str();
+					cout << string(info[i].title.begin(), info[i].title.end()) << "." << string(info[i].extension.begin(), info[i].extension.end());
 
 					gotoXY(1, whereY() + 1);
 					TextColor(ColorCode_Green);
@@ -315,12 +315,12 @@ display::display(Database data)
 						TextColor(ColorCode_Green);
 						cout << "Title: ";
 						TextColor(ColorCode_Blue);
-						wcout << info[r_choice].title.c_str() << L"." << info[r_choice].extension.c_str() << endl;
+						cout << string(info[r_choice].title.begin(), info[r_choice].title.end()) << "." << string(info[r_choice].extension.begin(), info[r_choice].extension.end());
 						TextColor(ColorCode_Green);
 						cout << "Content: " << endl;
 						TextColor(default_ColorCode);
 						cout << string(info[r_choice].content.begin(), info[r_choice].content.end()) << endl;
-						//convert Wstring to String because Wstring can't print long string
+						//convert Wstring to String because Wstring can't print spectial character
 
 						for (int i = 0; i < width; i++)
 						{
