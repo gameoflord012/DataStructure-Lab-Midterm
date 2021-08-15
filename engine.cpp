@@ -310,6 +310,8 @@ void OutputResult(wstring data, vector<string> word)
 	string tmp;
 	stringstream _ss(string(data.begin(), data.end()));
 
+	int cnt = 0;
+
 	while (!_ss.eof())
 	{		
 		tmp.clear();
@@ -329,7 +331,8 @@ void OutputResult(wstring data, vector<string> word)
 
 		if (!any_of(word.begin(), word.end(), [&](string elem) {if (tmp.find(elem) != -1) return true; return false;}))
 			continue;
-
+		if (cnt >= 4)
+			return;
 		cout << "...";
 		stringstream ss(tmp);
 		while (ss >> tmp)
@@ -358,6 +361,7 @@ void OutputResult(wstring data, vector<string> word)
 				cout << tmp << " ";
 		}
 		cout << "..." << endl;
+		cnt++;
 	}
 }
 

@@ -80,6 +80,13 @@ display::display(Database data)
 	int max_choice;
 	init();
 	max_choice = menu(1, -1);
+
+	vector<string> res;		//store history choice
+	vector<FileInfo> info;
+	SearchResult result;
+	vector<string> tmp;
+	vector<int> y_pos;  //store positions
+
 	for (;;)
 	{
 		key = inputKey();
@@ -110,11 +117,10 @@ display::display(Database data)
 
 				string query = "";
 				int key = ' ';
-
-				vector<string> res;		//store history choice
-				vector<FileInfo> info; 
-				SearchResult result;
 				
+				res.clear();
+				info.clear();
+
 				while (key != key_enter)
 				{						
 					key = inputKey();
@@ -182,7 +188,7 @@ display::display(Database data)
 					continue;
 				}
 
-				vector<string> tmp;
+				tmp.clear();
 
 				begin = clock();
 				tmp = searchResults(query, result, data);
@@ -204,7 +210,8 @@ display::display(Database data)
 				TextColor(default_ColorCode);
 
 				Y = whereY();
-				vector<int> y_pos;  //store positions
+
+				y_pos.clear();
 
 				int NumOfRes = 0;
 				info = result.GetInfos();
@@ -373,7 +380,7 @@ display::display(Database data)
 				penguins(); //show logo
 
 				break; //exit
-			}				
+			}
 		}
 	}
 }
