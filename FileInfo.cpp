@@ -78,7 +78,6 @@ vector<size_t> FileInfo::GetNumbers(wstring content)
 	vector<wstring> words = GetWords(content, L"[0-9]+");
 	for (wstring word : words) result.emplace_back(stoull(word));
 	return result;
-
 }
 // data processing
 wstring FileInfo::GetContent(std::ifstream& fileStream)
