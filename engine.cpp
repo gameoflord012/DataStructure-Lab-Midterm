@@ -313,7 +313,7 @@ void OutputResult(wstring data, vector<string> word)
 	int cnt = 0;
 
 	while (!_ss.eof())
-	{		
+	{
 		tmp.clear();
 		getline(_ss, tmp, '.');  //take 2 sentences
 		if (tmp.length() && is_Number(tmp.back()))  //decimal number case
@@ -327,10 +327,32 @@ void OutputResult(wstring data, vector<string> word)
 				tmp = tmp + " " + next;
 		}
 
-		tmp = SentenceFilter(tmp);  
+		tmp = SentenceFilter(tmp);
 
-		if (!any_of(word.begin(), word.end(), [&](string elem) {if (tmp.find(elem) != -1) return true; return false;}))
+		//if (!any_of(word.begin(), word.end(), [&](string elem) {if (tmp.find(elem) != -1) return true; return false;}))
+		//	continue;
+
+		bool check = false;
+		string s;
+		stringstream _ss_(tmp);
+		vector<string> _word_;
+		while (_ss_ >> s)
+		{
+			for (int i = 0; i < word.size(); i++)
+			{
+				if (s == word[i])
+				{
+					check = true;
+					_word_.push_back(word[i]);
+					word.erase(word.begin() + i);
+					break;
+				}
+			}
+		}
+
+		if (!check)
 			continue;
+
 		if (cnt >= 4)
 			return;
 		cout << "...";
@@ -338,14 +360,14 @@ void OutputResult(wstring data, vector<string> word)
 		while (ss >> tmp)
 		{
 			bool check = false;
-			for (string _tmp_ : word)
+			for (string _tmp_ : _word_)
 			{
 				_tmp_ = SentenceFilter(_tmp_);
 				if (_tmp_ == tmp)
 				{
 					check = true;
 					break;
-				}				
+				}
 			}
 
 			if (check)
@@ -356,7 +378,7 @@ void OutputResult(wstring data, vector<string> word)
 				TextColor(ColorCode_Red);  //RED
 				cout << tmp << " ";
 				TextColor(default_ColorCode);  //DarkWhite
-			} 
+			}
 			else
 				cout << tmp << " ";
 		}
