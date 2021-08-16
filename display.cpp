@@ -202,7 +202,6 @@ display::display(Database data)
 					gotoXY(i, whereY());
 					cout << "*";
 				}
-			
 				gotoXY(int(width/2) -3, whereY() + 1);
 				TextColor(ColorCode_Green);
 				cout << "RESULT              <'ESC' key to exit search>" << endl;		
