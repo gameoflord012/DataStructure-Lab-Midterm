@@ -1,69 +1,63 @@
-vietnam
-vietnam
-vietnam
-vietnam
-vietnam
-camera
-sony
-samsung
-panasonic
-$1-500
-samsung or sony
-sony or panasonic
-sony $100-200
-vietnam
-vietnam
-vietnam
-camera
-camera
-vietnam
-vietnam
-vietnam
-vietnam
-vietnam
-vietnam
-hello
-hello
-hello
-2
-dd
-dd
-4
-2
-covid
-taliban
-japan
+filetype:txt
+man AND power
+monday OR american
+intitle:human
+intitle: deep
+intitle:deep
+intitle:data
+#sunday
+#
+#
+#Orks
+#Jim
+$20.000
+$70
 $
-elon musk
-musk
-2
-reuter
- viet nam
-biden
-kill
-panda
-pandemic
-pull
-house
-dog
-computer
-duck
-milk
-đragon
-live
-city
-Ho Chi Minh
-Ha Noi
-gun
-music
-travel
-BBC
-CNN
-news
-traffic
-kabul
-China
-CHill
+$0
+$22
+$215
+#chaos
+chaos
+#chaos
+god
+god
+#god
+god
+#chaos
+#god
+god
+#chaos
+#god
+#chaos
+#god
+mon
+middle east
+middle
+middle -east
+"man"
+"man"
+"man"
+"man"
+intitle:data100
+monday + router
+monday -american
+monday
+monday_american
+monday-american
+monday -american
+americal
+american
+american-kids
+american -kids
+american - kids
+monday - american
+rain + router
+american + covid
+~human
+money - american
+monday - american
+#god
+monday
 
 
 
