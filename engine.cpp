@@ -310,8 +310,6 @@ void OutputResult(wstring data, vector<string> word)
 	string tmp;
 	stringstream _ss(string(data.begin(), data.end()));
 
-	int cnt = 0;
-
 	while (!_ss.eof())
 	{
 		tmp.clear();
@@ -353,24 +351,22 @@ void OutputResult(wstring data, vector<string> word)
 		if (!check)
 			continue;
 
-		if (cnt >= 4)
-			return;
 		cout << "...";
 		stringstream ss(tmp);
 		while (ss >> tmp)
 		{
-			bool check = false;
+			bool _check_ = false;
 			for (string _tmp_ : _word_)
 			{
 				_tmp_ = SentenceFilter(_tmp_);
 				if (_tmp_ == tmp)
 				{
-					check = true;
+					_check_ = true;
 					break;
 				}
 			}
 
-			if (check)
+			if (_check_)
 			{
 				for (int i = 0; i < tmp.length(); ++i)
 					is_Word(tmp[i]) ? tmp[i] -= 32 : int(); //Uppercase
@@ -383,7 +379,6 @@ void OutputResult(wstring data, vector<string> word)
 				cout << tmp << " ";
 		}
 		cout << "..." << endl;
-		cnt++;
 	}
 }
 

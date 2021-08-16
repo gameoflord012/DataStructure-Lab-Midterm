@@ -64,7 +64,7 @@ SearchResult Database::GetResults(SearchInfo searchInfo)
 		for (string synonym : searchBySynonym[WSTRING_2_STRING(searchInfo.syntax)])
 		{
 			finalResult = finalResult.OR(GetResults(SearchInfo(STRING_2_WSTRING(synonym), SearchType::word)));
-			cout << synonym << endl;
+			//cout << synonym << endl;
 		}
 		return finalResult;
 	}		
