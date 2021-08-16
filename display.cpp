@@ -209,6 +209,7 @@ display::display(Database data)
 				cout << "                    <'BACKSPACE' key to go back>" << endl;			//it's like chrome go back button
 				TextColor(default_ColorCode);
 				Y = whereY();
+
 				y_pos.clear();
 				int NumOfRes = 0;
 				for (int i = 0; i < info.size(); i++)
