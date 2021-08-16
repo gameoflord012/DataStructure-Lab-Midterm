@@ -210,7 +210,6 @@ display::display(Database data)
 				TextColor(default_ColorCode);
 				Y = whereY();
 				y_pos.clear();
-
 				int NumOfRes = 0;
 				for (int i = 0; i < info.size(); i++)
 				{
