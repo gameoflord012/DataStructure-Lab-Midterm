@@ -49,7 +49,7 @@ vector<string> searchResults(string query, SearchResult& results, Database datab
 			continue;
 		}
 
-		if (tmp[0] == '"') //exact match and wildcards
+		if (tmp[0] == '"') //exact match and wildcardz
 		{
 			//if (!_get.empty()) _get.pop_back();
 			//data.push_back(_get);
