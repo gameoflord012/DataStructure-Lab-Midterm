@@ -1,7 +1,7 @@
 #include "display.h"
 using namespace std;
 
-
+// move selection with keyboard
 void display::init()  //create box
 {
 	width = getWidth() - 1;

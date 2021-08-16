@@ -10,7 +10,7 @@ using namespace nlohmann;
 namespace fs = std::filesystem;
 
 int old_display(Database data);
-
+// function display
 int main()
 {
 	Database data = Database::GetInstance();
@@ -31,12 +31,12 @@ int old_display(Database data)
 	//Database data = Database::GetInstance();
 
 	for (;;)
-	{
+	{  //options for user input
 		SearchResult result;
 		cout << "1. Input query from keyboard." << endl << "2. Clear history." << endl;
 		cout << "0. Exit!" << endl << "OPTION > ";
 		int choice; cin >> choice; cin.ignore();
-
+		
 		if (!choice) break;
 		else if (choice == 2)
 		{
@@ -46,6 +46,7 @@ int old_display(Database data)
 			TextColor(7);
 			continue;
 		}
+		// color of function
 		string query;
 		cout << "Query > "; getline(cin, query);
 		cout << "0. Search." << endl << "1. History suggestion." << endl << "OPTION > ";
@@ -62,6 +63,7 @@ int old_display(Database data)
 			}
 			query = res[choice];
 		}
+		//save result 
 		else
 		{
 			ofstream output; output.open("history.txt", ios::app);

@@ -12,7 +12,7 @@ using namespace std;
 FileInfo::FileInfo()
 {
 }
-
+// built data from file txt and handle
 string FileInfo::GetPath(size_t key)
 {
 	return BUILD_DATA_DIR + to_string(key) + ".txt";

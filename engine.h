@@ -17,16 +17,22 @@
 using namespace std;
 
 //--------------ENGINE---------------
+// search and cout result
 void searchData(vector<string>& data, SearchResult& result, Database _data);
 vector<string> searchResults(string query, SearchResult& results, Database database);
 
 bool getRange(string tmp, int& num1, int& num2);
 
 //---------HISTORY-------------------------
+// print searching history ...
 int History(vector<string>& res, string query, int choice);
 void clearHistory();
 
 //---------OPTIONs---------------
+// 1- query
+// 2- history
+//3 -clean screen
+// exits
 bool is_accept(char& key);
 bool is_Number(char key);
 bool is_Word(char key);
