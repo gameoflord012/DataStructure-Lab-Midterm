@@ -1,5 +1,6 @@
 #include "console.h"
 
+// control from the keyboard
 int inputKey()
 {
 	if (_kbhit())
