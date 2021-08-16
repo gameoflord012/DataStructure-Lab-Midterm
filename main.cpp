@@ -74,6 +74,7 @@ int old_display(Database data)
 		tmp = searchResults(query, result, data); //SEARCH DATA
 		for (FileInfo info : result.GetInfos())
 		{
+			// interface shaping and coloring
 			printf("@-------------------------------------------------------------@\n");
 			TextColor(11);
 			wcout << L"Title: ";
