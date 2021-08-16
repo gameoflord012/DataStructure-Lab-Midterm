@@ -223,7 +223,7 @@ display::display(Database data)
 
 					TextColor(ColorCode_Green);					
 					cout << "Title: ";
-					TextColor(ColorCode_Blue);
+					TextColor(ColorCode_Green);
 					cout << string(info[i].title.begin(), info[i].title.end()) << "." << string(info[i].extension.begin(), info[i].extension.end());
 
 					gotoXY(1, whereY() + 1);
