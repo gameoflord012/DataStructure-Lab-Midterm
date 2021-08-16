@@ -51,6 +51,7 @@ int old_display(Database data)
 		cout << "Query > "; getline(cin, query);
 		cout << "0. Search." << endl << "1. History suggestion." << endl << "OPTION > ";
 		cin >> choice; cin.ignore();
+		//type choice of you
 		if (choice) {
 			vector<string> res;
 			History(res, query, -1);
