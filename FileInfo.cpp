@@ -82,7 +82,6 @@ vector<size_t> FileInfo::GetNumbers(wstring content)
 // data processing
 wstring FileInfo::GetContent(std::ifstream& fileStream)
 {
-
 	stringstream stream;
 	stream << fileStream.rdbuf();
 	string str = stream.str();
