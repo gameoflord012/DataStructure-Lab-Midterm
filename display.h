@@ -1,6 +1,6 @@
 #pragma region Belong to Nhat
 #include "engine.h"
-
+// print result and decorate to screen
 class display
 {
 private:
