@@ -92,11 +92,18 @@ vector<string> searchResults(string query, SearchResult& results, Database datab
 			data.push_back("OR");
 			_get = "";
 		}
-		else if (tmp == "and")
+		else if (tmp == "and" || tmp == "+")
 		{
 			if (!_get.empty()) _get.pop_back();
 			data.push_back(_get);
 			data.push_back("AND");
+			_get = "";
+		}
+		else if (tmp == "-")
+		{
+			if (!_get.empty()) _get.pop_back();
+			data.push_back(_get);
+			data.push_back("-");
 			_get = "";
 		}
 		else if (database.CointainStopWord(wstring(tmp.begin(), tmp.end())))
@@ -132,6 +139,10 @@ void searchData(vector<string>& data, SearchResult& result, Database database)
 		else if (tmp == "AND")
 		{
 			choice = 1;
+		}
+		else if (tmp == "-")
+		{
+			choice = 2;
 		}
 		else if (tmp == "intitle:")
 		{
@@ -205,6 +216,10 @@ void searchData(vector<string>& data, SearchResult& result, Database database)
 			else if (choice == 1)
 			{
 				result = result.AND(tmp_result);
+			}
+			else if (choice == 2)
+			{
+				result = result.EXCLUDE(tmp_result);
 			}
 		}
 	}
@@ -426,7 +441,7 @@ bool is_accept(char& k)  //convert to lowercase
 		k = '-';
 		return true;
 	}
-	else if (k == ' ' || k == '$' || k == '%' || k == '#' || k == '-' || k == '"' || k == ':' || k == '$')
+	else if (k == ' ' || k == '$' || k == '%' || k == '#' || k == '-' || k == '"' || k == ':' || k == '$' || k == '~' || k == '+')
 	{
 		return true;
 	}
