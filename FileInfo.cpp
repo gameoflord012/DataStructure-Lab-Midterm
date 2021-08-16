@@ -27,6 +27,8 @@ FileInfo FileInfo::GetFileInfo(size_t key)
 	return j;
 }
 
+
+// Testing
 FileInfo::FileInfo(wstring pathInfo)
 {
 	ifstream file(pathInfo);
