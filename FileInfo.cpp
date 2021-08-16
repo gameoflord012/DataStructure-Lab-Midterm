@@ -45,7 +45,7 @@ FileInfo::FileInfo(wstring pathInfo)
 
 	file.close();
 }
-
+// data processing
 wstring FileInfo::CombineWords(const std::vector<std::wstring>& hashtagsWithTag)
 {
 	return accumulate(hashtagsWithTag.begin(), hashtagsWithTag.end(), wstring(L""));
@@ -69,7 +69,7 @@ vector<wstring> FileInfo::GetWords(wstring content, wstring regexSyntax)
 
 	return result;
 }
-
+// data processing
 vector<size_t> FileInfo::GetNumbers(wstring content)
 {
 	vector<size_t> result;
@@ -77,7 +77,7 @@ vector<size_t> FileInfo::GetNumbers(wstring content)
 	for (wstring word : words) result.emplace_back(stoull(word));
 	return result;
 }
-
+// data processing
 wstring FileInfo::GetContent(std::ifstream& fileStream)
 {
 	stringstream stream;
