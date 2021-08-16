@@ -71,7 +71,6 @@ SearchResult Database::GetResults(SearchInfo searchInfo)
 	default:
 		break;
 	}
-
 	return SearchResult(result);
 }
 

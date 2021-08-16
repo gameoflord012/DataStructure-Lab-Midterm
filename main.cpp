@@ -51,6 +51,7 @@ int old_display(Database data)
 		cout << "Query > "; getline(cin, query);
 		cout << "0. Search." << endl << "1. History suggestion." << endl << "OPTION > ";
 		cin >> choice; cin.ignore();
+		//type choice of you
 		if (choice) {
 			vector<string> res;
 			History(res, query, -1);
@@ -74,6 +75,7 @@ int old_display(Database data)
 		tmp = searchResults(query, result, data); //SEARCH DATA
 		for (FileInfo info : result.GetInfos())
 		{
+			// interface shaping and coloring
 			printf("@-------------------------------------------------------------@\n");
 			TextColor(11);
 			wcout << L"Title: ";

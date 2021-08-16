@@ -18,7 +18,7 @@ void display::init()  //create box
 		gotoXY(width, i);
 		i % 2 ? cout << "|" : cout << "+";
 	}
-	//gotoXY(0, height);
+	//gotoXY(0, height); move
 	for (int i = 0; i < width; i++)
 	{
 		gotoXY(i, height);

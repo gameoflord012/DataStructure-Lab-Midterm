@@ -52,7 +52,7 @@ wstring FileInfo::CombineWords(const std::vector<std::wstring>& hashtagsWithTag)
 {
 	return accumulate(hashtagsWithTag.begin(), hashtagsWithTag.end(), wstring(L""));
 }
-
+//data processing
 vector<wstring> FileInfo::GetWords(wstring content, wstring regexSyntax)
 {
 	wregex rg(regexSyntax);
