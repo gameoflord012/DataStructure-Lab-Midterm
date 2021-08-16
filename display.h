@@ -11,7 +11,7 @@ private:
 	int m_choice = 0;  //menu choice
 	void penguins();	
 	void penguins1();
-	// interface shaping
+
 	void init();
 	int menu(int type, int choice);
 public:
